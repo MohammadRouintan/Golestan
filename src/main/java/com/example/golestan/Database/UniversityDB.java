@@ -22,41 +22,60 @@ public class UniversityDB extends Database{
         this.password = password;
     }
 
-    public void signup() throws SQLException {
-        super.setQuery("SELECT * FROM Universities WHERE Username = " + username);
-        boolean user = super.isExist();
-        super.setQuery("SELECT * FROM Universities WHERE Name = " + name);
-        boolean tempName = super.isExist();
-        if (user) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS USERNAME !!");
-            alert.show();
-        } else if (tempName) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS NAME !!");
-            alert.show();
+    public boolean addUni() throws SQLException {
+        if (checkUniWithName() || checkUniWithUsername()) {
+            return false;
         } else {
             super.setQuery("INSERT INTO Universities (Name, Username, Password) VALUES " +
-                    "(" + name + ", " + username + ", " + password + ")");
+                    "('" + name + "', '" + username + "', '" + password + "')");
             super.write();
         }
+
         super.disconnect();
+        return true;
     }
 
-    public boolean login() throws SQLException {
-        super.setQuery("SELECT * FROM Universities WHERE Username = " + username);
-        if (!super.isExist()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
-            alert.show();
+    public boolean updateUni() throws SQLException {
+        if (!checkUniWithUsername() || !checkUniWithName()) {
+            return false;
         } else {
-            while (findUniversities().next()) {
-                String recievePassword = findUniversities().getString("Password");
-                if (recievePassword.equals(password)) {
-                    super.disconnect();
-                    return true;
-                }
-            }
+            super.setQuery("UPDATE Universities SET Name = '" + name + "', Username = '" + username + "', Password = '" +
+                    password + "' WHERE Name = '" + name + "' OR Username = '" + username + "'");
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
+    }
+
+    public boolean removeUni() throws SQLException {
+        if (!checkUniWithName() || !checkUniWithUsername()) {
+            return false;
+        } else {
+            super.setQuery("DELETE FROM Universities WHERE Name = '" + name + "' OR Username = '" + username + "'");
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
+    }
+
+    public boolean checkUniWithName() throws SQLException {
+        super.setQuery("SELECT * FROM Universities WHERE Name = '" + name + "'");
+        if (super.isExist()) {
+            super.disconnect();
+            return true;
+        }
+
+        super.disconnect();
+        return false;
+    }
+
+    public boolean checkUniWithUsername() throws SQLException {
+        super.setQuery("SELECT * FROM Universities WHERE Username = '" + username + "'");
+        if (super.isExist()) {
+            super.disconnect();
+            return true;
         }
 
         super.disconnect();
