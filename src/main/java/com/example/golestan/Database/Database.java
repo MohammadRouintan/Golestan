@@ -4,7 +4,7 @@ import java.sql.*;
 
 public abstract class Database {
     private Connection connection;
-    private PreparedStatement statement;
+    private Statement statement;
     private String url;
     private String query;
     private ResultSet resultSet;
@@ -19,8 +19,8 @@ public abstract class Database {
 
     private void connect() throws SQLException {
         url = "jdbc:mysql://localhost:3306/Golestan";
-        connection = DriverManager.getConnection(url, "mohammad", "mohammad");
-        statement = connection.prepareStatement(query);
+        connection = DriverManager.getConnection(url, "Mohammad", "Mohammad");
+        statement = connection.createStatement();
     }
 
     public void disconnect() throws SQLException {
@@ -30,12 +30,12 @@ public abstract class Database {
 
     public void write() throws SQLException {
         connect();
-        statement.executeQuery();
+        statement.execute(this.query);
     }
 
     public ResultSet read() throws SQLException {
         connect();
-        resultSet = statement.executeQuery();
+        resultSet = statement.executeQuery(this.query);
         return resultSet;
     }
 

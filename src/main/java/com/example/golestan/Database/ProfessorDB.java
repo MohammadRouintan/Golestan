@@ -18,14 +18,14 @@ public class ProfessorDB extends Database {
     private int endClass;
 
     public ProfessorDB() {
-        this.username = "";
-        this.password = "";
-        this.firstName = "";
-        this.lastName = "";
+        this.username = null;
+        this.password = null;
+        this.firstName = null;
+        this.lastName = null;
         this.goroh = 0;
-        this.college = "";
-        this.semester = "";
-        this.course = "";
+        this.college = null;
+        this.semester = null;
+        this.course = null;
         this.startClass = 0;
         this.endClass = 0;
     }
@@ -37,8 +37,8 @@ public class ProfessorDB extends Database {
         this.lastName = lastName;
         this.goroh = goroh;
         this.college = college;
-        this.semester = "";
-        this.course = "";
+        this.semester = null;
+        this.course = null;
         this.startClass = 0;
         this.endClass = 0;
     }

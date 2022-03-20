@@ -82,9 +82,9 @@ public class StudentDB extends Database {
         } else {
             super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
                     "Semester, Professor, Course, Score, TotalAverage, StartClass, EndClass) VALUES " +
-                    "(" + studentId + ", " + username + ", " + password + ", " + firstName + ", " + lastName + ", " +
-                    majorSubject + ", " + college + ", " + enteringYear + ", " + semester + ", " + professor + ", " +
-                    course + ", " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
+                    "(" + studentId + ", '" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', '" +
+                    majorSubject + "', '" + college + "', " + enteringYear + ", '" + semester + "', '" + professor + "', '" +
+                    course + "', " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
             super.write();
         }
 
@@ -93,7 +93,7 @@ public class StudentDB extends Database {
     }
     
     public boolean checkStuWithUsername() throws SQLException {
-        super.setQuery("SELECT * FROM Students WHERE Username = " + username);
+        super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         if (super.isExist()) {
             super.disconnect();
             return true;
@@ -122,7 +122,7 @@ public class StudentDB extends Database {
                     "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
                     "', College = '" + college + "', EnteringYear = " + enteringYear + ", Semester = '" + semester +
                     "', Professor = '" + professor + "', Course = '" + course + "', Score = " + score + ", TotalAverage = " + totalAverage +
-                    ", StartClass = " + startClass + ", EndClass = " + endClass + " WHERE StudentId = " + studentId + " OR Username = " + username);
+                    ", StartClass = " + startClass + ", EndClass = " + endClass + " WHERE StudentId = " + studentId + " OR Username = '" + username + "'");
             super.write();
         }
 
@@ -134,7 +134,7 @@ public class StudentDB extends Database {
         if (!checkStuWithUsername() || !checkStuWithStudentId()) {
             return false;
         } else {
-            super.setQuery("DELETE FROM Students WHERE StudentId = " + studentId + " OR Username = " + username);
+            super.setQuery("DELETE FROM Students WHERE StudentId = " + studentId + " OR Username = '" + username + "'");
             super.write();
         }
 
