@@ -39,5 +39,7 @@ public abstract class Database {
         return resultSet;
     }
 
-    public abstract boolean isExist() throws SQLException;
+    public boolean isExist() throws SQLException {
+        return read().isBeforeFirst();
+    }
 }

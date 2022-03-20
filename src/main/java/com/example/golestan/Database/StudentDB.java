@@ -76,11 +76,11 @@ public class StudentDB extends Database {
         this.endClass = endClass;
     }
 
-    public void signUpStudent() throws SQLException {
+    public void signup() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = " + username);
-        boolean user = isExist();
+        boolean user = super.isExist();
         super.setQuery("SELECT * FROM Students WHERE StudentId = " + studentId);
-        boolean id = isExist();
+        boolean id = super.isExist();
 
         if (user) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -98,11 +98,12 @@ public class StudentDB extends Database {
                     course + ", " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
             super.write();
         }
+        super.disconnect();
     }
     
-    public boolean loginStudent() throws SQLException {
+    public boolean login() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = " + username);
-        if (!isExist()) {
+        if (!super.isExist()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
             alert.show();
@@ -110,19 +111,14 @@ public class StudentDB extends Database {
             while (findStudent().next()) {
                 String recievePassword = findStudent().getString("Password");
                 if (recievePassword.equals(password)) {
+                    super.disconnect();
                     return true;
                 }
             }
         }
-        
-        return false;
-    }
 
-    @Override
-    public boolean isExist() throws SQLException {
-        ResultSet resultSet = super.read();
         super.disconnect();
-        return resultSet.isBeforeFirst();
+        return false;
     }
     
     public ResultSet findStudent() throws SQLException {
@@ -130,7 +126,6 @@ public class StudentDB extends Database {
         super.disconnect();
         return resultSet;
     }
-    
     
     public int getStudentId() {
         return studentId;
