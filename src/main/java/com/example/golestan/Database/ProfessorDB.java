@@ -18,14 +18,14 @@ public class ProfessorDB extends Database {
     private int endClass;
 
     public ProfessorDB() {
-        this.username = null;
-        this.password = null;
-        this.firstName = null;
-        this.lastName = null;
+        this.username = "";
+        this.password = "";
+        this.firstName = "";
+        this.lastName = "";
         this.goroh = 0;
-        this.college = null;
-        this.semester = null;
-        this.course = null;
+        this.college = "";
+        this.semester = "";
+        this.course = "";
         this.startClass = 0;
         this.endClass = 0;
     }
@@ -37,8 +37,8 @@ public class ProfessorDB extends Database {
         this.lastName = lastName;
         this.goroh = goroh;
         this.college = college;
-        this.semester = null;
-        this.course = null;
+        this.semester = "";
+        this.course = "";
         this.startClass = 0;
         this.endClass = 0;
     }
@@ -56,35 +56,54 @@ public class ProfessorDB extends Database {
         this.endClass = endClass;
     }
 
-    public void signup() throws SQLException {
-        super.setQuery("SELECT * FROM Professors WHERE Username = " + username);
-        if (super.isExist()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS USERNAME !!");
-            alert.show();
+    public boolean addProf() throws SQLException {
+        if (checkProfWithUsername()) {
+            return false;
         } else {
-            super.setQuery("INSERT INTO Professors (Username, Password, Firstname, Lastname, Goroh, College, Semester, Course, StartClass, EndClass) VALUES " +
-                    "(" + username + ", " + password + ", " + firstName + ", " + lastName + ", " +
-                    goroh + ", " + college + ", " + semester + ", " + course + ", " + startClass + ", " + endClass + ")");
+            super.setQuery("INSERT INTO Professors (Username, Password, Firstname, Lastname, Goroh, College, " +
+                    "Semester, Course, StartClass, EndClass) VALUES " +
+                    "('" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', " +
+                    goroh + ", '" + college + "', '" + semester + "', '" +
+                    course + "', " + startClass + ", " + endClass + ")");
             super.write();
         }
+
         super.disconnect();
+        return true;
     }
 
-    public boolean login() throws SQLException {
-        super.setQuery("SELECT * FROM Professors WHERE Username = " + username);
-        if (!super.isExist()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
-            alert.show();
+    public boolean updateProf() throws SQLException {
+        if (!checkProfWithUsername()) {
+            return false;
         } else {
-            while (findProfessor().next()) {
-                String recievePassword = findProfessor().getString("Password");
-                if (recievePassword.equals(password)) {
-                    super.disconnect();
-                    return true;
-                }
-            }
+            super.setQuery("UPDATE Professors SET Username = '" + username + "', Password = '" + password +
+                    "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', Goroh = " + goroh +
+                    ", College = '" + college + "', Semester = '" + semester + "', Course = '" + course +
+                    "', StartClass = " + startClass + ", EndClass = " + endClass + " WHERE Username = '" + username + "'");
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
+    }
+
+    public boolean removeProf() throws SQLException {
+        if (!checkProfWithUsername()) {
+            return false;
+        } else {
+            super.setQuery("DELETE FROM Professors WHERE Username = '" + username + "'");
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
+    }
+
+    public boolean checkProfWithUsername() throws SQLException {
+        super.setQuery("SELECT * FROM Professors WHERE Username = '" + username + "'");
+        if (super.isExist()) {
+            super.disconnect();
+            return true;
         }
 
         super.disconnect();
