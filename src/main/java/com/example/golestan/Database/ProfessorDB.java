@@ -1,8 +1,5 @@
 package com.example.golestan.Database;
 
-import javafx.scene.control.Alert;
-
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ProfessorDB extends Database {
@@ -108,12 +105,6 @@ public class ProfessorDB extends Database {
 
         super.disconnect();
         return false;
-    }
-
-    public ResultSet findProfessor() throws SQLException {
-        ResultSet resultSet = super.read();
-        super.disconnect();
-        return resultSet;
     }
 
     public String getUsername() {
