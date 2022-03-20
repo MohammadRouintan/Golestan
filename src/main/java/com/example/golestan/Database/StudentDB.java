@@ -76,20 +76,9 @@ public class StudentDB extends Database {
         this.endClass = endClass;
     }
 
-    public void signup() throws SQLException {
-        super.setQuery("SELECT * FROM Students WHERE Username = " + username);
-        boolean user = super.isExist();
-        super.setQuery("SELECT * FROM Students WHERE StudentId = " + studentId);
-        boolean id = super.isExist();
-
-        if (user) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS USERNAME !!");
-            alert.show();
-        } else if (id) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS STUDENT ID !!");
-            alert.show();
+    public boolean addStu() throws SQLException {
+        if (checkStuWithUsername() || checkStuWithStudentId()) {
+            return false;
         } else {
             super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
                     "Semester, Professor, Course, Score, TotalAverage, StartClass, EndClass) VALUES " +
@@ -98,27 +87,59 @@ public class StudentDB extends Database {
                     course + ", " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
             super.write();
         }
+
         super.disconnect();
+        return true;
     }
     
-    public boolean login() throws SQLException {
+    public boolean checkStuWithUsername() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = " + username);
-        if (!super.isExist()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
-            alert.show();
-        } else {
-            while (findStudent().next()) {
-                String recievePassword = findStudent().getString("Password");
-                if (recievePassword.equals(password)) {
-                    super.disconnect();
-                    return true;
-                }
-            }
+        if (super.isExist()) {
+            super.disconnect();
+            return true;
         }
 
         super.disconnect();
         return false;
+    }
+
+    public boolean checkStuWithStudentId() throws SQLException {
+        super.setQuery("SELECT * FROM Students WHERE StudentId = " + studentId);
+        if (super.isExist()) {
+            super.disconnect();
+            return true;
+        }
+
+        super.disconnect();
+        return false;
+    }
+
+    public boolean updateStu() throws SQLException {
+        if (!checkStuWithUsername() || !checkStuWithStudentId()) {
+            return false;
+        } else {
+            super.setQuery("UPDATE Students SET StudentId = " + studentId + ", Username = '" + username + "', Password = '" + password +
+                    "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
+                    "', College = '" + college + "', EnteringYear = " + enteringYear + ", Semester = '" + semester +
+                    "', Professor = '" + professor + "', Course = '" + course + "', Score = " + score + ", TotalAverage = " + totalAverage +
+                    ", StartClass = " + startClass + ", EndClass = " + endClass + " WHERE StudentId = " + studentId + " OR Username = " + username);
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
+    }
+
+    public boolean removeStu() throws SQLException {
+        if (!checkStuWithUsername() || !checkStuWithStudentId()) {
+            return false;
+        } else {
+            super.setQuery("DELETE FROM Students WHERE StudentId = " + studentId + " OR Username = " + username);
+            super.write();
+        }
+
+        super.disconnect();
+        return true;
     }
     
     public ResultSet findStudent() throws SQLException {
