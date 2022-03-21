@@ -3,6 +3,7 @@ package com.example.golestan.Account;
 import com.example.golestan.Database.UniversityDB;
 import javafx.scene.control.Alert;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UniversityAccount extends UniversityDB {
@@ -14,7 +15,7 @@ public class UniversityAccount extends UniversityDB {
     public boolean login(String username, String password, String job) throws SQLException {
         super.setUsername(username);
         super.setPassword(password);
-        if (job == null || !job.equals("University")) {
+        if (!job.equals("University")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("PLEASE SELECT CORRECT JOB !!");
             alert.show();
@@ -26,10 +27,10 @@ public class UniversityAccount extends UniversityDB {
             alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
             alert.show();
         } else {
-            while (super.read().next()) {
-                String recievePassword = super.read().getString("Password");
-                if (recievePassword.equals(password)) {
-                    super.disconnect();
+            ResultSet resultSet = findUni();
+            while (resultSet.next()) {
+                String str = resultSet.getString("Password");
+                if (str.equals(password)) {
                     return true;
                 }
             }
