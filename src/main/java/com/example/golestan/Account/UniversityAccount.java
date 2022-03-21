@@ -1,27 +1,27 @@
 package com.example.golestan.Account;
 
-import com.example.golestan.Database.StudentDB;
+import com.example.golestan.Database.UniversityDB;
 import javafx.scene.control.Alert;
 
 import java.sql.SQLException;
 
-public class StudentAccount extends StudentDB {
+public class UniversityAccount extends UniversityDB {
 
-    public StudentAccount() {
+    public UniversityAccount() {
         super();
     }
 
     public boolean login(String username, String password, String job) throws SQLException {
         super.setUsername(username);
         super.setPassword(password);
-        if (job == null || !job.equals("Student")) {
+        if (job == null || !job.equals("University")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("PLEASE SELECT CORRECT JOB !!");
             alert.show();
             return false;
         }
 
-        if (!super.checkStuWithUsername()) {
+        if (!super.checkUniWithUsername()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
             alert.show();
@@ -39,28 +39,24 @@ public class StudentAccount extends StudentDB {
         return false;
     }
 
-    public boolean signup(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear) throws SQLException {
-        super.setStudentId(studentId);
+
+    public boolean signup(String name, String username, String password) throws SQLException {
+        super.setName(name);
         super.setUsername(username);
         super.setPassword(password);
-        super.setFirstName(firstName);
-        super.setLastName(lastName);
-        super.setMajorSubject(majorSubject);
-        super.setCollege(college);
-        super.setEnteringYear(enteringYear);
 
-        if (super.checkStuWithUsername()) {
+        if (super.checkUniWithName()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS NAME !!");
+            alert.show();
+            return false;
+        } else if (super.checkUniWithUsername()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS USERNAME !!");
             alert.show();
             return false;
-        } else if (super.checkStuWithStudentId()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS STUDENT ID !!");
-            alert.show();
-            return false;
         } else {
-            super.addStu();
+            super.addUni();
         }
 
         return true;
