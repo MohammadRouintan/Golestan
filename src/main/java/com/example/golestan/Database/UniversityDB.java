@@ -1,5 +1,6 @@
 package com.example.golestan.Database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UniversityDB extends Database{
@@ -77,6 +78,11 @@ public class UniversityDB extends Database{
 
         super.disconnect();
         return false;
+    }
+
+    public ResultSet findUni() throws SQLException {
+        super.setQuery("SELECT * FROM `Universities` WHERE Username = '" + username + "'");
+        return super.read();
     }
 
     public String getName() {
