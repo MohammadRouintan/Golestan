@@ -1,5 +1,6 @@
 package com.example.golestan.Controller;
 
+import com.example.golestan.Account.StudentAccount;
 import com.example.golestan.MainApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class SignupStu {
 
@@ -57,8 +59,20 @@ public class SignupStu {
     }
 
     @FXML
-    void signupClicked(ActionEvent event) {
-
+    void signupClicked(ActionEvent event) throws SQLException, IOException {
+        SceneController control = new SceneController();
+        StudentAccount studentAccount = new StudentAccount();
+        boolean valid = studentAccount.signup(studentIdInput.getText(),
+                usernameInput.getText(),
+                passwordInput.getText(),
+                firstnameInput.getText(),
+                lastnameInput.getText(),
+                majorSubjectInput.getText(),
+                collegeInput.getText(),
+                enteringYearInput.getText());
+        if (valid) {
+            control.switchScene(MainApplication.window, "StudentDashboard.fxml");
+        }
     }
 
 }

@@ -5,6 +5,8 @@ import javafx.scene.control.Alert;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UniversityAccount extends UniversityDB {
 
@@ -12,20 +14,15 @@ public class UniversityAccount extends UniversityDB {
         super();
     }
 
-    public boolean login(String username, String password, String job) throws SQLException {
+    public boolean login(String username, String password) throws SQLException {
         super.setUsername(username);
         super.setPassword(password);
-        if (!job.equals("University")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("PLEASE SELECT CORRECT JOB !!");
-            alert.show();
-            return false;
-        }
 
         if (!super.checkUniWithUsername()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
             alert.show();
+            return false;
         } else {
             ResultSet resultSet = findUni();
             while (resultSet.next()) {
@@ -36,15 +33,22 @@ public class UniversityAccount extends UniversityDB {
             }
         }
 
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText("PLEASE ENTER CORRECT PASSWORD !!");
+        alert.show();
         super.disconnect();
         return false;
     }
 
 
     public boolean signup(String name, String username, String password) throws SQLException {
-        super.setName(name);
-        super.setUsername(username);
-        super.setPassword(password);
+        if (checkValid(name, username, password)) {
+            super.setName(name);
+            super.setUsername(username);
+            super.setPassword(password);
+        } else {
+            return false;
+        }
 
         if (super.checkUniWithName()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -58,6 +62,33 @@ public class UniversityAccount extends UniversityDB {
             return false;
         } else {
             super.addUni();
+        }
+
+        return true;
+    }
+
+    public boolean checkValid(String name, String username, String password) {
+        Pattern pattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher matcher = pattern.matcher(name);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS NAME IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        if (username.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS USERNAME IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        if (password.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS USERNAME IS INVALID !!");
+            alert.show();
+            return false;
         }
 
         return true;

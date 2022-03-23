@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+
 public class UniDashboard {
 
     @FXML
@@ -79,8 +81,9 @@ public class UniDashboard {
     }
 
     @FXML
-    void logoutClicked(ActionEvent event) {
-
+    void logoutClicked(ActionEvent event) throws IOException {
+        SceneController control = new SceneController();
+        control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
