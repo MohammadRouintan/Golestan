@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 
 import java.io.IOException;
 
-public class StudentDashboard {
+public class StuDashboard {
 
     @FXML
     private Button logoutButton;

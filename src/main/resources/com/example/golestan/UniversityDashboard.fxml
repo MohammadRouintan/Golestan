@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -21,17 +24,17 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="createFacultyButton" layoutX="303.0" layoutY="225.0" mnemonicParsing="false" onAction="#createFacultyClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
+                        <Button fx:id="createFacultyButton" layoutX="161.0" layoutY="226.0" mnemonicParsing="false" onAction="#createFacultyClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
                            <font>
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Label layoutX="170.0" layoutY="162.0" text="Faculty Name :" textFill="#0c31a1">
+                        <Label layoutX="28.0" layoutY="162.0" text="Faculty Name :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="nameInput" layoutX="303.0" layoutY="156.0" prefHeight="40.0" prefWidth="200.0" promptText="Name" />
+                        <TextField fx:id="nameInput" layoutX="161.0" layoutY="156.0" prefHeight="40.0" prefWidth="200.0" promptText="Name" />
                         <Button fx:id="quitButton" layoutX="737.0" layoutY="424.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
@@ -42,12 +45,17 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <Ellipse fill="DODGERBLUE" layoutX="399.0" layoutY="70.0" radiusX="162.0" radiusY="42.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label layoutX="320.0" layoutY="52.0" text="New Faculty" textFill="WHITE">
+                        <Ellipse fill="DODGERBLUE" layoutX="133.0" layoutY="76.0" radiusX="119.0" radiusY="62.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label layoutX="55.0" layoutY="58.0" text="New Faculty" textFill="WHITE">
                            <font>
                               <Font size="30.0" />
                            </font>
                         </Label>
+                        <TableView fx:id="facultyList" layoutX="567.0" layoutY="38.0" prefHeight="315.0" prefWidth="248.0" AnchorPane.rightAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="nameFaculty" prefWidth="247.0" style="-fx-font-size: 23;" text="Faculty Name" />
+                          </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content></Tab>
@@ -65,29 +73,35 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <Button fx:id="createSemesterButton" layoutX="304.0" layoutY="262.0" mnemonicParsing="false" onAction="#createSemesterClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
+                        <Button fx:id="createSemesterButton" layoutX="159.0" layoutY="279.0" mnemonicParsing="false" onAction="#createSemesterClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
                            <font>
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Label layoutX="156.0" layoutY="144.0" text="Semster Name :" textFill="#0c31a1">
+                        <Label layoutX="13.0" layoutY="157.0" text="Semster Name :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="167.0" layoutY="196.0" text="Semster Year :" textFill="#0c31a1">
+                        <Label layoutX="24.0" layoutY="209.0" text="Semster Year :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="semsterNameInput" layoutX="302.0" layoutY="140.0" prefHeight="40.0" prefWidth="200.0" />
-                        <ChoiceBox fx:id="semesterYearInput" layoutX="302.0" layoutY="195.0" prefHeight="40.0" prefWidth="200.0" />
-                        <Ellipse fill="DODGERBLUE" layoutX="395.0" layoutY="64.0" radiusX="162.0" radiusY="42.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label layoutX="312.0" layoutY="46.0" text="New Semester" textFill="WHITE">
+                        <ChoiceBox fx:id="semsterNameInput" layoutX="159.0" layoutY="153.0" prefHeight="40.0" prefWidth="200.0" />
+                        <ChoiceBox fx:id="semesterYearInput" layoutX="159.0" layoutY="208.0" prefHeight="40.0" prefWidth="200.0" />
+                        <Ellipse fill="DODGERBLUE" layoutX="133.0" layoutY="76.0" radiusX="119.0" radiusY="62.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label layoutX="41.0" layoutY="58.0" text="New Semester" textFill="WHITE">
                            <font>
                               <Font size="30.0" />
                            </font>
                         </Label>
+                        <TableView fx:id="semesterList" layoutX="400.0" layoutY="43.0" prefHeight="300.0" prefWidth="400.0">
+                          <columns>
+                            <TableColumn fx:id="nameSemester" prefWidth="200.0" style="-fx-font-size: 20;" text="Name" />
+                            <TableColumn fx:id="yearSemester" minWidth="0.0" prefWidth="199.0" style="-fx-font-size: 20;" text="Year" />
+                          </columns>
+                        </TableView>
                      </children>
                   </AnchorPane>
                </content></Tab>
@@ -143,8 +157,7 @@
                            </font>
                         </Label>
                         <ChoiceBox fx:id="semesterInput" layoutX="374.0" layoutY="201.0" prefWidth="150.0" />
-                        <ChoiceBox fx:id="dayInput" layoutX="619.0" layoutY="202.0" prefWidth="150.0" />
-                        <Label layoutX="568.0" layoutY="202.0" text="Day :" textFill="#0c31a1">
+                        <Label layoutX="27.0" layoutY="288.0" text="Day :" textFill="#0c31a1">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -155,13 +168,13 @@
                            </font>
                         </Label>
                         <TextField fx:id="startClassInput" layoutX="121.0" layoutY="242.0" promptText="StartClass" />
-                        <Label layoutX="304.0" layoutY="243.0" text="EndClass :" textFill="#0c31a1">
+                        <Label layoutX="301.0" layoutY="243.0" text="EndClass :" textFill="#0c31a1">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="endClassInput" layoutX="398.0" layoutY="242.0" promptText="EndClass" />
-                        <Button fx:id="createCourseButton" layoutX="292.0" layoutY="301.0" mnemonicParsing="false" onAction="#createCourseClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
+                        <TextField fx:id="endClassInput" layoutX="391.0" layoutY="242.0" promptText="EndClass" />
+                        <Button fx:id="createCourseButton" layoutX="303.0" layoutY="345.0" mnemonicParsing="false" onAction="#createCourseClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Create" textFill="WHITE">
                            <font>
                               <Font size="21.0" />
                            </font>
@@ -176,6 +189,37 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
+                        <TextField fx:id="examDate" layoutX="622.0" layoutY="202.0" promptText="ExamDate" />
+                        <Label layoutX="531.0" layoutY="202.0" text="ExamDate :" textFill="#0c31a1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="sat" alignment="CENTER" layoutX="79.0" layoutY="291.0" mnemonicParsing="false" text="Saturday">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="sun" alignment="CENTER" layoutX="220.0" layoutY="291.0" mnemonicParsing="false" text="Sunday">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="mon" layoutX="346.0" layoutY="291.0" mnemonicParsing="false" text="Monday">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="tue" alignment="CENTER" layoutX="488.0" layoutY="291.0" mnemonicParsing="false" text="Tuesday">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </CheckBox>
+                        <CheckBox fx:id="wed" alignment="CENTER" layoutX="624.0" layoutY="291.0" mnemonicParsing="false" text="Wednesday">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </CheckBox>
                      </children>
                   </AnchorPane>
                </content>
@@ -200,6 +244,29 @@
                               <Font size="30.0" />
                            </font>
                         </Label>
+                        <TextField fx:id="newName" layoutX="321.0" layoutY="139.0" prefHeight="40.0" prefWidth="200.0" promptText="Name" />
+                        <Label layoutX="140.0" layoutY="144.0" text="New University Name :" textFill="#0c31a1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="newUsername" layoutX="321.0" layoutY="193.0" prefHeight="40.0" prefWidth="200.0" promptText="Username" />
+                        <Label layoutX="186.0" layoutY="200.0" text="New Username :" textFill="#0c31a1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="191.0" layoutY="253.0" text="New Password :" textFill="#0c31a1">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="newPassword" layoutX="321.0" layoutY="247.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
+                        <Button fx:id="editandrestart" layoutX="321.0" layoutY="305.0" mnemonicParsing="false" onAction="#editClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Edit &amp; Restart" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content>
