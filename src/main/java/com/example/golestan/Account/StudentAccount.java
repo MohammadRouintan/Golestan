@@ -33,7 +33,6 @@ public class StudentAccount extends StudentDB {
             }
         }
 
-
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setContentText("PLEASE ENTER CORRECT PASSWORD !!");
         alert.show();

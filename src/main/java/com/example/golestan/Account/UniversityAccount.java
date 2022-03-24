@@ -61,10 +61,9 @@ public class UniversityAccount extends UniversityDB {
             alert.show();
             return false;
         } else {
-            super.addUni();
+            boolean check = super.addUni();
+            return check;
         }
-
-        return true;
     }
 
     public boolean checkValid(String name, String username, String password) {
@@ -93,4 +92,5 @@ public class UniversityAccount extends UniversityDB {
 
         return true;
     }
+
 }

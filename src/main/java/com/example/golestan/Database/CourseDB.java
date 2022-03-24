@@ -1,6 +1,10 @@
 package com.example.golestan.Database;
 
+import javafx.scene.control.Alert;
+
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CourseDB extends Database {
     private String name;
@@ -13,7 +17,6 @@ public class CourseDB extends Database {
     private int startClass;
     private int endClass;
     private String day;
-    private String examDate;
 
     public CourseDB() {
         this.name = "";
@@ -26,10 +29,9 @@ public class CourseDB extends Database {
         this.startClass = 0;
         this.endClass = 0;
         this.day = "";
-        this.examDate = "";
     }
 
-    public CourseDB(String name, String code, int vahed, String profFirstName, String profLastName, String college, String semester, int startClass, int endClass, String day, String examDate) {
+    public CourseDB(String name, String code, int vahed, String profFirstName, String profLastName, String college, String semester, int startClass, int endClass, String day) {
         this.name = name;
         this.code = code;
         this.vahed = vahed;
@@ -40,7 +42,6 @@ public class CourseDB extends Database {
         this.startClass = startClass;
         this.endClass = endClass;
         this.day = day;
-        this.examDate = examDate;
     }
 
     public boolean addCourse() throws SQLException {
@@ -48,9 +49,9 @@ public class CourseDB extends Database {
             return false;
         } else {
             super.setQuery("INSERT INTO Courses (Name, Code, Vahed, ProfessorFirstName, ProfessorLastName, College, " +
-                    "Semester, StartClass, EndClass, Day, ExamDate) VALUES ('" + name + "', '" + code + "', " + vahed +
+                    "Semester, StartClass, EndClass, Day) VALUES ('" + name + "', '" + code + "', " + vahed +
                     ", '" + profFirstName + "', '" + profLastName + "', '" + college + "', '" + semester + "', " + startClass +
-                    ", " + endClass + ", '" + day + "', '" + examDate + "')");
+                    ", " + endClass + ", '" + day + "')");
             super.write();
         }
 
@@ -68,6 +69,89 @@ public class CourseDB extends Database {
         super.disconnect();
         return false;
     }
+
+    public boolean checkValid(String name, String code, String vahed, String profFirstName, String profLastName, String college, String semester, String startClass, String endClass) {
+        Pattern pattern;
+        Matcher matcher;
+
+        pattern = Pattern.compile("^[A-za-z]+[1-9]*$");
+        matcher = pattern.matcher(name);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS NAME IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        pattern = Pattern.compile("^[0-9]+$");
+        matcher = pattern.matcher(code);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS CODE IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        pattern = Pattern.compile("^[1-9]{1}$");
+        matcher = pattern.matcher(vahed);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS VAHED IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        pattern = Pattern.compile("^[A-za-z]+$");
+        matcher = pattern.matcher(profFirstName);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS PROFESSOR FIRSTNAME IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        matcher = pattern.matcher(profLastName);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS PROFESSOR LASTNAME IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        pattern = Pattern.compile("^[0-9]{1,2}$");
+        matcher = pattern.matcher(startClass);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS START CLASS IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        matcher = pattern.matcher(endClass);
+        if (!matcher.find()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS END CLASS IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        if (college.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS COLLEGE IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        if (semester.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS SEMESTER IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        return true;
+    }
+
 
     public String getName() {
         return name;
@@ -147,13 +231,5 @@ public class CourseDB extends Database {
 
     public void setDay(String day) {
         this.day = day;
-    }
-
-    public String getExamDate() {
-        return examDate;
-    }
-
-    public void setExamDate(String examDate) {
-        this.examDate = examDate;
     }
 }

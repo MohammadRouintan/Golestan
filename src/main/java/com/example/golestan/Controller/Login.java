@@ -56,6 +56,7 @@ public class Login implements Initializable {
                     UniversityAccount account1 = new UniversityAccount();
                     valid = account1.login(usernameInput.getText(), passwordInput.getText());
                     if (valid) {
+                        UniDashboard.setUsername(usernameInput.getText());
                         control.switchScene(MainApplication.window, "UniversityDashboard.fxml");
                     }
                     break;

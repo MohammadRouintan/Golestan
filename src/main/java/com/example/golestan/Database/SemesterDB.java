@@ -1,5 +1,6 @@
 package com.example.golestan.Database;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SemesterDB extends Database {
@@ -36,6 +37,13 @@ public class SemesterDB extends Database {
 
         super.disconnect();
         return false;
+    }
+
+    public ResultSet semesterList() throws SQLException {
+        super.setQuery("SELECT * FROM Semesters");
+        ResultSet resultSet = super.read();
+
+        return resultSet;
     }
 
     public String getName() {

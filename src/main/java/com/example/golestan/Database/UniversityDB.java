@@ -1,5 +1,7 @@
 package com.example.golestan.Database;
 
+import javafx.scene.control.Alert;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -21,6 +23,13 @@ public class UniversityDB extends Database{
     }
 
     public boolean addUni() throws SQLException {
+        if (numberOfUni() >= 1) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("YOU CANNOT CREATE NEW ACCOUNT.\nBECAUSE AN UNIVERSITY ALREADY EXIST.");
+            alert.show();
+            return false;
+        }
+
         if (checkUniWithName() || checkUniWithUsername()) {
             return false;
         } else {
@@ -33,12 +42,12 @@ public class UniversityDB extends Database{
         return true;
     }
 
-    public boolean updateUni() throws SQLException {
-        if (!checkUniWithUsername() || !checkUniWithName()) {
+    public boolean updateUni(String newUsername) throws SQLException {
+        if (!checkUniWithUsername()) {
             return false;
         } else {
-            super.setQuery("UPDATE Universities SET Name = '" + name + "', Username = '" + username + "', Password = '" +
-                    password + "' WHERE Name = '" + name + "' OR Username = '" + username + "'");
+            super.setQuery("UPDATE Universities SET Name = '" + name + "', Username = '" + newUsername + "', Password = '" +
+                    password + "' WHERE Username = '" + username + "'");
             super.write();
         }
 
@@ -83,6 +92,17 @@ public class UniversityDB extends Database{
     public ResultSet findUni() throws SQLException {
         super.setQuery("SELECT * FROM `Universities` WHERE Username = '" + username + "'");
         return super.read();
+    }
+
+    public int numberOfUni () throws SQLException {
+        super.setQuery("SELECT * FROM Universities");
+        ResultSet resultSet = super.read();
+        int counter = 0;
+        while (resultSet.next()) {
+            counter++;
+        }
+
+        return counter;
     }
 
     public String getName() {

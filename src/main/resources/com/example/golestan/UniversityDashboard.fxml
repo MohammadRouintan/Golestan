@@ -4,6 +4,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -189,12 +190,6 @@
                               <Font size="20.0" />
                            </font>
                         </Button>
-                        <TextField fx:id="examDate" layoutX="622.0" layoutY="202.0" promptText="ExamDate" />
-                        <Label layoutX="531.0" layoutY="202.0" text="ExamDate :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
                         <CheckBox fx:id="sat" alignment="CENTER" layoutX="79.0" layoutY="291.0" mnemonicParsing="false" text="Saturday">
                            <font>
                               <Font size="17.0" />
@@ -261,12 +256,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="newPassword" layoutX="321.0" layoutY="247.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
                         <Button fx:id="editandrestart" layoutX="321.0" layoutY="305.0" mnemonicParsing="false" onAction="#editClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Edit &amp; Restart" textFill="WHITE">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Button>
+                        <PasswordField fx:id="newPassword" layoutX="321.0" layoutY="245.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
                      </children>
                   </AnchorPane>
                </content>

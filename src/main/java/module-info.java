@@ -10,4 +10,6 @@ module com.example.golestan {
     opens com.example.golestan.Controller to javafx.fxml;
     exports com.example.golestan.Box;
     opens com.example.golestan.Box to javafx.fxml;
+    exports com.example.golestan.Database;
+    opens com.example.golestan.Database to javafx.fxml;
 }
