@@ -1,9 +1,6 @@
 package com.example.golestan.Controller;
 
-import com.example.golestan.Database.CollegeDB;
-import com.example.golestan.Database.CourseDB;
-import com.example.golestan.Database.SemesterDB;
-import com.example.golestan.Database.UniversityDB;
+import com.example.golestan.Database.*;
 import com.example.golestan.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +29,7 @@ public class UniDashboard {
     private TextField codeInput;
 
     @FXML
-    private ChoiceBox<String> collegeInput;
+    private ComboBox<String> collegeInput;
 
     @FXML
     private Button createCourseButton;
@@ -54,6 +51,9 @@ public class UniDashboard {
 
     @FXML
     private TableView<CollegeDB> facultyList;
+
+    @FXML
+    private ComboBox<String> profName;
 
     @FXML
     private TextField firstnameProfInput;
@@ -128,13 +128,30 @@ public class UniDashboard {
     private CheckBox wed;
 
     @FXML
+    void collegeSelected(ActionEvent event) throws SQLException {
+        ProfessorDB professorDB = new ProfessorDB();
+        professorDB.setCollege(collegeInput.getValue());
+        ResultSet resultSet1 = professorDB.findProfWithCollege();
+        ObservableList<String> profList = FXCollections.observableArrayList();
+        if (resultSet1.isBeforeFirst()) {
+            while (resultSet1.next()) {
+                String firstname = resultSet1.getString("Firstname");
+                String lastname = resultSet1.getString("Lastname");
+                profList.add(firstname + " " + lastname);
+            }
+            profName.setItems(profList);
+        } else {
+            profList.removeAll();
+            profName.setItems(profList);
+        }
+    }
+
+    @FXML
     void createCourseClicked(ActionEvent event) throws SQLException {
         CourseDB courseDB = new CourseDB();
         boolean valid = courseDB.checkValid(nameCourseInput.getText(),
                 codeInput.getText(),
                 vahedInput.getText(),
-                firstnameProfInput.getText(),
-                lastnameProfInput.getText(),
                 collegeInput.getValue(),
                 semesterInput.getValue(),
                 startClassInput.getText(),
@@ -156,19 +173,30 @@ public class UniDashboard {
         if (wed.isSelected()) {
             day += wed.getText();
         }
-
+        boolean notExist = false;
         if (valid) {
+            String[] split = profName.getValue().split(" ");
             courseDB.setName(nameCourseInput.getText());
             courseDB.setCode(codeInput.getText());
             courseDB.setVahed(Integer.parseInt(vahedInput.getText()));
-            courseDB.setProfFirstName(firstnameProfInput.getText());
-            courseDB.setProfLastName(lastnameProfInput.getText());
+            courseDB.setProfFirstName(split[0]);
+            courseDB.setProfLastName(split[1]);
             courseDB.setCollege(collegeInput.getValue());
             courseDB.setSemester(semesterInput.getValue());
             courseDB.setStartClass(Integer.parseInt(startClassInput.getText()));
             courseDB.setEndClass(Integer.parseInt(endClassInput.getText()));
             courseDB.setDay(day);
-            courseDB.addCourse();
+            notExist = courseDB.addCourse();
+        }
+
+        if (notExist) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("COURSE ADDED.");
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS CODE ALREADY EXIST !!");
+            alert.show();
         }
     }
 
@@ -250,7 +278,6 @@ public class UniDashboard {
             yearSemester.setCellValueFactory(new PropertyValueFactory<SemesterDB, Integer>("year"));
             semesterList.setItems(semesters);
         }
-
         semesterInput.setItems(existSemester);
     }
 }

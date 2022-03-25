@@ -2,6 +2,7 @@ package com.example.golestan.Database;
 
 import javafx.scene.control.Alert;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +30,11 @@ public class CourseDB extends Database {
         this.startClass = 0;
         this.endClass = 0;
         this.day = "";
+    }
+
+    public CourseDB(String name, String code) {
+        this.name = name;
+        this.code = code;
     }
 
     public CourseDB(String name, String code, int vahed, String profFirstName, String profLastName, String college, String semester, int startClass, int endClass, String day) {
@@ -70,7 +76,13 @@ public class CourseDB extends Database {
         return false;
     }
 
-    public boolean checkValid(String name, String code, String vahed, String profFirstName, String profLastName, String college, String semester, String startClass, String endClass) {
+    public ResultSet findCourse(String firstName, String lastName) throws SQLException {
+        super.setQuery("SELECT Name, Code FROM Courses WHERE ProfessorFirstName = '" + firstName + "' AND " +
+                "ProfessorLastName = '" + lastName + "'");
+        return super.read();
+    }
+
+    public boolean checkValid(String name, String code, String vahed, String college, String semester, String startClass, String endClass) {
         Pattern pattern;
         Matcher matcher;
 
@@ -97,23 +109,6 @@ public class CourseDB extends Database {
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("THIS VAHED IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
-        pattern = Pattern.compile("^[A-za-z]+$");
-        matcher = pattern.matcher(profFirstName);
-        if (!matcher.find()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS PROFESSOR FIRSTNAME IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
-        matcher = pattern.matcher(profLastName);
-        if (!matcher.find()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS PROFESSOR LASTNAME IS INVALID !!");
             alert.show();
             return false;
         }

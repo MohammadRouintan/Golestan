@@ -109,7 +109,12 @@ public class ProfessorDB extends Database {
     }
 
     public ResultSet findProf() throws SQLException {
-        super.setQuery("SELECT * FROM `Professors` WHERE Username = '" + username + "'");
+        super.setQuery("SELECT * FROM Professors WHERE Username = '" + username + "'");
+        return super.read();
+    }
+
+    public ResultSet findProfWithCollege() throws SQLException {
+        super.setQuery("SELECT * FROM Professors WHERE College = '" + college + "'");
         return super.read();
     }
 

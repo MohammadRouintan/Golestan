@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,6 +31,25 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
+                        <TableView fx:id="courseList" layoutY="3.0" prefHeight="458.0" prefWidth="244.0" AnchorPane.topAnchor="3.0">
+                          <columns>
+                            <TableColumn fx:id="nameColumn" prefWidth="125.0" style="-fx-font-size: 18;" text="Name" />
+                              <TableColumn fx:id="codeColumn" prefWidth="118.0" style="-fx-font-size: 18;" text="Code" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <TableView editable="true" layoutX="244.0" layoutY="2.0" prefHeight="418.0" prefWidth="556.0" AnchorPane.topAnchor="3.0">
+                          <columns>
+                            <TableColumn editable="false" prefWidth="143.0" style="-fx-font-size: 18;" text="Student Id" />
+                            <TableColumn editable="false" prefWidth="277.0" style="-fx-font-size: 18;" text="Name" />
+                              <TableColumn prefWidth="135.0" style="-fx-font-size: 18;" text="Score" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
                             </children>
                         </AnchorPane>
                     </content></Tab>

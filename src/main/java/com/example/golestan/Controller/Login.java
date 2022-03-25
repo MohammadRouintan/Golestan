@@ -64,6 +64,7 @@ public class Login implements Initializable {
                     ProfessorAccount account2 = new ProfessorAccount();
                     valid = account2.login(usernameInput.getText(), passwordInput.getText());
                     if (valid) {
+                        ProfDashboard.setUsername(usernameInput.getText());
                         control.switchScene(MainApplication.window, "ProfessorDashboard.fxml");
                     }
                     break;
