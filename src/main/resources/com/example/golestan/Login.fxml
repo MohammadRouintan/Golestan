@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.Login">
    <left>
       <AnchorPane prefHeight="600.0" prefWidth="389.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
@@ -44,7 +43,7 @@
                   <Image url="@../../../img/user.png" />
                </image>
             </ImageView>
-            <Button fx:id="loginButton" layoutX="130.0" layoutY="396.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="28.0" prefWidth="159.5" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="130.0" layoutY="396.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="28.0" prefWidth="159.5" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Login" textFill="WHITE">
                <font>
                   <Font size="20.0" />
                </font>
@@ -55,7 +54,7 @@
                   <Image url="@../../../img/job.png" />
                </image>
             </ImageView>
-            <Button fx:id="signupButton" layoutX="171.0" layoutY="482.0" mnemonicParsing="false" onAction="#signupClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1;" text="Sign Up" textFill="WHITE">
+            <Button fx:id="signupButton" layoutX="171.0" layoutY="482.0" mnemonicParsing="false" onAction="#signupClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Sign Up" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
@@ -70,7 +69,7 @@
                   <Font size="27.0" />
                </font>
             </Label>
-            <Button fx:id="quitButton" layoutX="357.0" layoutY="570.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1;" text="Quit" textFill="WHITE">
+            <Button fx:id="quitButton" layoutX="357.0" layoutY="570.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>

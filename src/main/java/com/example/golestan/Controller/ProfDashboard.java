@@ -1,6 +1,5 @@
 package com.example.golestan.Controller;
 
-import com.example.golestan.Database.CollegeDB;
 import com.example.golestan.Database.CourseDB;
 import com.example.golestan.Database.ProfessorDB;
 import com.example.golestan.MainApplication;
@@ -65,7 +64,7 @@ public class ProfDashboard {
 
         CourseDB courseDB = new CourseDB();
         ObservableList<CourseDB> courseNames = FXCollections.observableArrayList();
-        ResultSet resultSet = courseDB.findCourse(firstname, lastname);
+        ResultSet resultSet = courseDB.findCourseWithProf(firstname, lastname);
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
                 String name = resultSet.getString("Name");
@@ -82,7 +81,6 @@ public class ProfDashboard {
 
             @Override
             public void changed(ObservableValue<? extends CourseDB> observable, CourseDB oldValue, CourseDB newValue) {
-                String currentCourse = courseList.getSelectionModel().getSelectedItem().getCode();
 
             }
         });

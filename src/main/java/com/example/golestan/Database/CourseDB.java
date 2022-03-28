@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CourseDB extends Database {
+    private String professor;
     private String name;
     private String code;
     private int vahed;
@@ -18,6 +19,7 @@ public class CourseDB extends Database {
     private int startClass;
     private int endClass;
     private String day;
+    private String time;
 
     public CourseDB() {
         this.name = "";
@@ -37,6 +39,12 @@ public class CourseDB extends Database {
         this.code = code;
     }
 
+    public CourseDB(String name, String day, String time) {
+        this.name = name;
+        this.day = day;
+        this.time = time;
+    }
+
     public CourseDB(String name, String code, int vahed, String profFirstName, String profLastName, String college, String semester, int startClass, int endClass, String day) {
         this.name = name;
         this.code = code;
@@ -48,6 +56,14 @@ public class CourseDB extends Database {
         this.startClass = startClass;
         this.endClass = endClass;
         this.day = day;
+    }
+
+    public CourseDB(String name, String code, String professor, int vahed, String semester) {
+        this.name = name;
+        this.code = code;
+        this.professor = professor;
+        this.vahed = vahed;
+        this.semester = semester;
     }
 
     public boolean addCourse() throws SQLException {
@@ -76,13 +92,28 @@ public class CourseDB extends Database {
         return false;
     }
 
-    public ResultSet findCourse(String firstName, String lastName) throws SQLException {
+    public ResultSet findCourse() throws SQLException {
+        super.setQuery("SELECT * FROM Courses");
+        return super.read();
+    }
+
+    public ResultSet findCourseWithCode() throws SQLException {
+        super.setQuery("SELECT * FROM Courses WHERE Code = '" + code + "'");
+        return super.read();
+    }
+
+    public ResultSet findCourseWithStu(String username) throws SQLException {
+        super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
+        return super.read();
+    }
+
+    public ResultSet findCourseWithProf(String firstName, String lastName) throws SQLException {
         super.setQuery("SELECT Name, Code FROM Courses WHERE ProfessorFirstName = '" + firstName + "' AND " +
                 "ProfessorLastName = '" + lastName + "'");
         return super.read();
     }
 
-    public boolean checkValid(String name, String code, String vahed, String college, String semester, String startClass, String endClass) {
+    public boolean checkValid(String name, String code, String vahed, String college, String semester, int startClass, int endClass) {
         Pattern pattern;
         Matcher matcher;
 
@@ -95,7 +126,7 @@ public class CourseDB extends Database {
             return false;
         }
 
-        pattern = Pattern.compile("^[0-9]+$");
+        pattern = Pattern.compile("^[1-9]+$");
         matcher = pattern.matcher(code);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -113,23 +144,6 @@ public class CourseDB extends Database {
             return false;
         }
 
-        pattern = Pattern.compile("^[0-9]{1,2}$");
-        matcher = pattern.matcher(startClass);
-        if (!matcher.find()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS START CLASS IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
-        matcher = pattern.matcher(endClass);
-        if (!matcher.find()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS END CLASS IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
         if (college.equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("THIS COLLEGE IS INVALID !!");
@@ -140,6 +154,13 @@ public class CourseDB extends Database {
         if (semester.equals("")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("THIS SEMESTER IS INVALID !!");
+            alert.show();
+            return false;
+        }
+
+        if (startClass >= endClass) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("START AND END CLASS IS INVALID !!");
             alert.show();
             return false;
         }
@@ -226,5 +247,21 @@ public class CourseDB extends Database {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

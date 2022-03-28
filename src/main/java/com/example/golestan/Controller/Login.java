@@ -72,6 +72,7 @@ public class Login implements Initializable {
                     StudentAccount account3 = new StudentAccount();
                     valid = account3.login(usernameInput.getText(), passwordInput.getText());
                     if (valid) {
+                        StuDashboard.setUsername(usernameInput.getText());
                         control.switchScene(MainApplication.window, "StudentDashboard.fxml");
                     }
                     break;

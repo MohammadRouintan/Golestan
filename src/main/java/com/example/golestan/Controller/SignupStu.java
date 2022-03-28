@@ -1,10 +1,14 @@
 package com.example.golestan.Controller;
 
 import com.example.golestan.Account.StudentAccount;
+import com.example.golestan.Database.CollegeDB;
 import com.example.golestan.MainApplication;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -17,7 +21,7 @@ public class SignupStu {
     private Button backButton;
 
     @FXML
-    private TextField collegeInput;
+    private ComboBox<String> collegeInput;
 
     @FXML
     private TextField enteringYearInput;
@@ -68,11 +72,19 @@ public class SignupStu {
                 firstnameInput.getText(),
                 lastnameInput.getText(),
                 majorSubjectInput.getText(),
-                collegeInput.getText(),
+                collegeInput.getValue(),
                 enteringYearInput.getText());
         if (valid) {
+            StuDashboard.setUsername(usernameInput.getText());
             control.switchScene(MainApplication.window, "StudentDashboard.fxml");
         }
+    }
+
+    public void initialize() throws SQLException {
+        ObservableList<String> collegeList = FXCollections.observableArrayList();
+        CollegeDB college = new CollegeDB();
+        collegeList.addAll(college.collegeNames());
+        collegeInput.setItems(collegeList);
     }
 
 }

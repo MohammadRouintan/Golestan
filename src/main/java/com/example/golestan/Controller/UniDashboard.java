@@ -47,7 +47,7 @@ public class UniDashboard {
     private Button editandrestart;
 
     @FXML
-    private TextField endClassInput;
+    private ComboBox<Integer> endInput;
 
     @FXML
     private TableView<CollegeDB> facultyList;
@@ -101,7 +101,7 @@ public class UniDashboard {
     private ChoiceBox<String> semsterNameInput;
 
     @FXML
-    private TextField startClassInput;
+    private ComboBox<Integer> startInput;
 
     @FXML
     private TextField vahedInput;
@@ -154,25 +154,26 @@ public class UniDashboard {
                 vahedInput.getText(),
                 collegeInput.getValue(),
                 semesterInput.getValue(),
-                startClassInput.getText(),
-                endClassInput.getText());
+                startInput.getValue(),
+                endInput.getValue());
 
         String day = "";
         if (sat.isSelected()) {
-            day += sat.getText();
+            day += sat.getText() + " ";
         }
         if (sun.isSelected()) {
-            day += sun.getText();
+            day += sun.getText() + " ";
         }
         if (mon.isSelected()) {
-            day += mon.getText();
+            day += mon.getText() + " ";
         }
         if (tue.isSelected()) {
-            day += tue.getText();
+            day += tue.getText() + " ";
         }
         if (wed.isSelected()) {
             day += wed.getText();
         }
+
         boolean notExist = false;
         if (valid) {
             String[] split = profName.getValue().split(" ");
@@ -183,19 +184,19 @@ public class UniDashboard {
             courseDB.setProfLastName(split[1]);
             courseDB.setCollege(collegeInput.getValue());
             courseDB.setSemester(semesterInput.getValue());
-            courseDB.setStartClass(Integer.parseInt(startClassInput.getText()));
-            courseDB.setEndClass(Integer.parseInt(endClassInput.getText()));
+            courseDB.setStartClass(startInput.getValue());
+            courseDB.setEndClass(endInput.getValue());
             courseDB.setDay(day);
             notExist = courseDB.addCourse();
         }
 
         if (notExist) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("COURSE ADDED.");
             alert.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS CODE ALREADY EXIST !!");
+            alert.setContentText("THIS INFORMATION IS INVALID !!");
             alert.show();
         }
     }
@@ -279,5 +280,12 @@ public class UniDashboard {
             semesterList.setItems(semesters);
         }
         semesterInput.setItems(existSemester);
+
+        ObservableList<Integer> times = FXCollections.observableArrayList();
+        for (int i = 1; i <= 24; i++) {
+            times.add(i);
+        }
+        startInput.setItems(times);
+        endInput.setItems(times);
     }
 }

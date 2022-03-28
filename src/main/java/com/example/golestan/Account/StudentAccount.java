@@ -131,7 +131,7 @@ public class StudentAccount extends StudentDB {
         }
 
 
-        pattern = Pattern.compile("^[1-9]{4}$");
+        pattern = Pattern.compile("^[0-9]{4}$");
         matcher = pattern.matcher(enteringYear);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
