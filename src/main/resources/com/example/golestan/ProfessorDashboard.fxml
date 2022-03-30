@@ -44,7 +44,7 @@
                           <columns>
                             <TableColumn fx:id="idColumn" editable="false" prefWidth="143.0" style="-fx-font-size: 18;" text="Student Id" />
                             <TableColumn fx:id="nameStuColumn" editable="false" prefWidth="277.0" style="-fx-font-size: 18;" text="Name" />
-                              <TableColumn fx:id="scoreColumn" prefWidth="135.0" style="-fx-font-size: 18;" text="Score" />
+                              <TableColumn fx:id="scoreColumn" onEditCommit="#editScore" prefWidth="135.0" style="-fx-font-size: 18;" text="Score" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -93,7 +93,7 @@
                         <Font size="48.0" />
                     </font>
                 </Label>
-                <Label layoutX="720.0" layoutY="36.0" text="Label" textFill="WHITE" />
+                <Label fx:id="showName" layoutX="634.0" layoutY="47.0" text="Label" textFill="WHITE" />
             </children>
         </AnchorPane>
     </top>
