@@ -13,7 +13,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.StuDashboard">
@@ -50,16 +52,39 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </TableView>
-                                <Button fx:id="addButton" layoutX="658.0" layoutY="180.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
+                                <Button fx:id="addButton" layoutX="658.0" layoutY="245.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
                                     <font>
                                         <Font size="21.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="removeButton" layoutX="658.0" layoutY="240.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
+                                <Button fx:id="removeButton" layoutX="658.0" layoutY="305.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
                                     <font>
                                         <Font size="21.0" />
                                     </font>
                                 </Button>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0c31a1" height="156.0" layoutX="639.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="161.0" />
+                        <Label layoutX="669.0" layoutY="35.0" text="Limit :" textFill="WHITE">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="656.0" layoutY="94.0" text="Received :" textFill="WHITE">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Circle fill="WHITE" layoutX="750.0" layoutY="47.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="WHITE" layoutX="768.0" layoutY="106.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="limit" layoutX="735.0" layoutY="30.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="received" layoutX="753.0" layoutY="90.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
                             </children>
                         </AnchorPane>
                     </content></Tab>

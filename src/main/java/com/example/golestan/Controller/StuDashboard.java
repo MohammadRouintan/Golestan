@@ -105,6 +105,12 @@ public class StuDashboard {
     private Label showName;
 
     @FXML
+    private Label limit;
+
+    @FXML
+    private Label received;
+
+    @FXML
     void addClicked(ActionEvent event) throws NullPointerException, SQLException {
         CourseDB course = courseList.getSelectionModel().getSelectedItem();
         StudentDB student = new StudentDB();
