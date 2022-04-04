@@ -34,32 +34,32 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                        <TableView fx:id="courseList" layoutX="-1.0" layoutY="3.0" prefHeight="460.0" prefWidth="641.0">
-                          <columns>
-                            <TableColumn prefWidth="553.0" style="-fx-font-size: 20;" text="CourseList">
-                                 <columns>
-                                    <TableColumn fx:id="courseName" prefWidth="83.0" text="Name" />
-                                  <TableColumn fx:id="courseCode" prefWidth="147.0" text="Code" />
-                                    <TableColumn fx:id="courseProf" prefWidth="163.0" text="Professor" />
-                                    <TableColumn fx:id="courseVahed" prefWidth="96.0" text="Vahed" />
-                                    <TableColumn fx:id="courseSemester" prefWidth="100.0" text="Semester" />
-                                 </columns>
-                              </TableColumn>
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                        <Button fx:id="addButton" layoutX="658.0" layoutY="180.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
-                           <font>
-                              <Font size="21.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="removeButton" layoutX="658.0" layoutY="240.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
-                           <font>
-                              <Font size="21.0" />
-                           </font>
-                        </Button>
+                                <TableView fx:id="courseList" layoutX="-1.0" layoutY="3.0" prefHeight="460.0" prefWidth="641.0">
+                                    <columns>
+                                        <TableColumn prefWidth="553.0" style="-fx-font-size: 20;" text="CourseList">
+                                            <columns>
+                                                <TableColumn fx:id="courseName" prefWidth="83.0" text="Name" />
+                                                <TableColumn fx:id="courseCode" prefWidth="147.0" text="Code" />
+                                                <TableColumn fx:id="courseProf" prefWidth="163.0" text="Professor" />
+                                                <TableColumn fx:id="courseVahed" prefWidth="96.0" text="Vahed" />
+                                                <TableColumn fx:id="courseSemester" prefWidth="100.0" text="Semester" />
+                                            </columns>
+                                        </TableColumn>
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                                <Button fx:id="addButton" layoutX="658.0" layoutY="180.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
+                                    <font>
+                                        <Font size="21.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="removeButton" layoutX="658.0" layoutY="240.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
+                                    <font>
+                                        <Font size="21.0" />
+                                    </font>
+                                </Button>
                             </children>
                         </AnchorPane>
                     </content></Tab>
@@ -77,17 +77,17 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                        <TableView fx:id="scoreTable" layoutX="271.0" layoutY="12.0" prefHeight="389.0" prefWidth="521.0">
-                          <columns>
-                            <TableColumn fx:id="nameColumn" prefWidth="102.0" style="-fx-font-size: 20;" text="Name" />
-                            <TableColumn fx:id="vahedColumn" prefWidth="210.0" style="-fx-font-size: 20;" text="Vahed" />
-                              <TableColumn fx:id="scoreColumn" prefWidth="78.0" style="-fx-font-size: 20;" text="Score" />
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
-                        <ComboBox fx:id="semesterSelect" layoutX="39.0" layoutY="80.0" onAction="#semesterClicked" prefHeight="37.0" prefWidth="191.0" promptText="Semester" />
+                                <TableView fx:id="scoreTable" layoutX="271.0" layoutY="12.0" prefHeight="389.0" prefWidth="521.0">
+                                    <columns>
+                                        <TableColumn fx:id="nameColumn" prefWidth="102.0" style="-fx-font-size: 20;" text="Name" />
+                                        <TableColumn fx:id="vahedColumn" prefWidth="210.0" style="-fx-font-size: 20;" text="Vahed" />
+                                        <TableColumn fx:id="scoreColumn" prefWidth="78.0" style="-fx-font-size: 20;" text="Score" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
+                                <ComboBox fx:id="semesterSelect" layoutX="39.0" layoutY="80.0" onAction="#semesterClicked" prefHeight="37.0" prefWidth="191.0" promptText="Semester" />
                             </children>
                         </AnchorPane>
                     </content></Tab>
@@ -105,16 +105,16 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                        <TableView fx:id="courseDate" layoutX="54.0" layoutY="21.0" prefHeight="388.0" prefWidth="668.0">
-                          <columns>
-                            <TableColumn fx:id="courseColumn" prefWidth="219.0" style="-fx-font-size: 20;" text="Course" />
-                            <TableColumn fx:id="daysColumn" prefWidth="229.0" style="-fx-font-size: 20;" text="Days" />
-                              <TableColumn fx:id="timeColumn" prefWidth="157.0" style="-fx-font-size: 20;" text="Time" />
-                          </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
-                        </TableView>
+                                <TableView fx:id="courseDate" layoutX="54.0" layoutY="21.0" prefHeight="388.0" prefWidth="668.0">
+                                    <columns>
+                                        <TableColumn fx:id="courseColumn" prefWidth="219.0" style="-fx-font-size: 20;" text="Course" />
+                                        <TableColumn fx:id="daysColumn" prefWidth="229.0" style="-fx-font-size: 20;" text="Days" />
+                                        <TableColumn fx:id="timeColumn" prefWidth="157.0" style="-fx-font-size: 20;" text="Time" />
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                    </columnResizePolicy>
+                                </TableView>
                             </children>
                         </AnchorPane>
                     </content>
@@ -139,64 +139,64 @@
                                         <Font size="30.0" />
                                     </font>
                                 </Label>
-                        <Label layoutX="14.0" layoutY="139.0" text="New FirstName :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="firstnameInput" layoutX="150.0" layoutY="133.0" prefHeight="40.0" prefWidth="200.0" promptText="Firstname" />
-                        <Label layoutX="380.0" layoutY="142.0" text="New LastName :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="lastnameInput" layoutX="520.0" layoutY="134.0" prefHeight="40.0" prefWidth="200.0" promptText="Lastname" />
-                        <Label layoutX="14.0" layoutY="197.0" text="New Student Id :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="studentidInput" layoutX="150.0" layoutY="190.0" prefHeight="40.0" prefWidth="200.0" promptText="StudentId" />
-                        <Label textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="380.0" layoutY="198.0" text="New Username :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="usernameInput" layoutX="520.0" layoutY="191.0" prefHeight="40.0" prefWidth="200.0" promptText="Username" />
-                        <Label layoutX="17.0" layoutY="254.0" text="New Password :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="415.0" layoutY="256.0" text="New Major :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <PasswordField fx:id="passwordInput" layoutX="150.0" layoutY="249.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
-                        <TextField fx:id="majorInput" layoutX="520.0" layoutY="251.0" prefHeight="40.0" prefWidth="200.0" promptText="Major" />
-                        <Label layoutX="32.0" layoutY="313.0" text="New College :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="editButton" alignment="CENTER" layoutX="306.0" layoutY="383.0" mnemonicParsing="false" onAction="#editClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Edit &amp; Restart" textFill="WHITE">
-                           <font>
-                              <Font size="21.0" />
-                           </font>
-                        </Button>
-                        <ComboBox fx:id="collegeInput" layoutX="150.0" layoutY="305.0" prefHeight="40.0" prefWidth="200.0" promptText="College" />
-                        <TextField fx:id="enteringYearInput" layoutX="520.0" layoutY="305.0" prefHeight="40.0" prefWidth="200.0" promptText="EnteringYear" />
-                        <Label layoutX="361.0" layoutY="313.0" prefHeight="0.0" prefWidth="144.0" text="New EnteringYear :" textFill="#0c31a1">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
+                                <Label layoutX="14.0" layoutY="139.0" text="New FirstName :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="firstnameInput" layoutX="150.0" layoutY="133.0" prefHeight="40.0" prefWidth="200.0" promptText="Firstname" />
+                                <Label layoutX="380.0" layoutY="142.0" text="New LastName :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="lastnameInput" layoutX="520.0" layoutY="134.0" prefHeight="40.0" prefWidth="200.0" promptText="Lastname" />
+                                <Label layoutX="14.0" layoutY="197.0" text="New Student Id :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="studentidInput" layoutX="150.0" layoutY="190.0" prefHeight="40.0" prefWidth="200.0" promptText="StudentId" />
+                                <Label textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="380.0" layoutY="198.0" text="New Username :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="usernameInput" layoutX="520.0" layoutY="191.0" prefHeight="40.0" prefWidth="200.0" promptText="Username" />
+                                <Label layoutX="17.0" layoutY="254.0" text="New Password :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="415.0" layoutY="256.0" text="New Major :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <PasswordField fx:id="passwordInput" layoutX="150.0" layoutY="249.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
+                                <TextField fx:id="majorInput" layoutX="520.0" layoutY="251.0" prefHeight="40.0" prefWidth="200.0" promptText="Major" />
+                                <Label layoutX="32.0" layoutY="313.0" text="New College :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="editButton" alignment="CENTER" layoutX="306.0" layoutY="383.0" mnemonicParsing="false" onAction="#editClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Edit &amp; Restart" textFill="WHITE">
+                                    <font>
+                                        <Font size="21.0" />
+                                    </font>
+                                </Button>
+                                <ComboBox fx:id="collegeInput" layoutX="150.0" layoutY="305.0" prefHeight="40.0" prefWidth="200.0" promptText="College" />
+                                <TextField fx:id="enteringYearInput" layoutX="520.0" layoutY="305.0" prefHeight="40.0" prefWidth="200.0" promptText="EnteringYear" />
+                                <Label layoutX="361.0" layoutY="313.0" prefHeight="0.0" prefWidth="144.0" text="New EnteringYear :" textFill="#0c31a1">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
                             </children>
                         </AnchorPane>
                     </content>

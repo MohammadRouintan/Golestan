@@ -278,7 +278,7 @@ public class StuDashboard {
                     }
                 }
             }
-            
+
             nameColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, String>("name"));
             vahedColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Integer>("vahed"));
             scoreColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Float>("score"));

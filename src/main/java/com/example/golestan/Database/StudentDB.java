@@ -38,12 +38,6 @@ public class StudentDB extends Database {
         this.score = score;
     }
 
-    public StudentDB(int studentId, String name, float score) {
-        this.studentId = studentId;
-        this.name = name;
-        this.score = score;
-    }
-
     public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear) {
         this.studentId = studentId;
         this.username = username;
@@ -95,7 +89,7 @@ public class StudentDB extends Database {
         super.write();
         super.disconnect();
     }
-    
+
     public boolean checkStuWithUsername(String username) throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         if (super.isExist()) {
@@ -131,16 +125,8 @@ public class StudentDB extends Database {
         return false;
     }
 
-    public void addScore() throws SQLException {
-        super.setQuery("UPDATE Students SET Score = " + score + " WHERE StudentId = " + studentId + " AND CourseCode = '" + courseCode + "'");
-        super.write();
-        super.disconnect();
-    }
-
-    public boolean removeStu() throws SQLException {
-        if (!checkStuWithUsername()) {
-            return false;
-        } else {
+    public void removeStu() throws SQLException {
+        if (checkStuWithUsername(username)) {
             super.setQuery("DELETE FROM Students WHERE Username = '" + username + "' AND CourseCode = '" + courseCode + "'");
             super.write();
             super.disconnect();
@@ -156,10 +142,6 @@ public class StudentDB extends Database {
         super.setQuery("SELECT Score FROM Students WHERE CourseCode = '" + courseCode + "'");
         return super.read();
     }
-
-    public ResultSet findCourseWithCode() throws SQLException {
-        super.setQuery("SELECT * FROM Students WHERE CourseCode = '" + courseCode + "'");
-        return super.read();
 
     public String findName() throws SQLException {
         ResultSet resultSet = findStuWithUsername();
@@ -179,7 +161,7 @@ public class StudentDB extends Database {
         }
         return year;
     }
-    
+
     public int getStudentId() {
         return studentId;
     }

@@ -115,7 +115,7 @@ public class ProfDashboard {
                         int studentId = resultSet2.getInt("StudentId");
                         String name = resultSet2.getString("Firstname") + " " + resultSet2.getString("Lastname");
                         float score = resultSet2.getFloat("Score");
-                        studentList.add(new StudentDB(studentId, name, score));
+                        studentList.add(new StudentDB(name, studentId, score));
                     }
                     idColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Integer>("studentId"));
                     nameStuColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, String>("name"));
