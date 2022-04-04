@@ -4,21 +4,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StudentDB extends Database {
-    private int studentId;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private String majorSubject;
     private String college;
-    private int enteringYear;
     private String courseCode;
     private String name;
-    private int vahed;
     private float score;
     private float totalAverage;
-    private int startClass;
-    private int endClass;
+    private int studentId;
+    private int enteringYear;
+    private int vahed;
 
     public StudentDB() {
         this.studentId = 0;
@@ -32,8 +30,6 @@ public class StudentDB extends Database {
         this.courseCode = "";
         this.score = 0;
         this.totalAverage = 0;
-        this.startClass = 0;
-        this.endClass = 0;
     }
 
     public StudentDB(String name, int vahed, float score) {
@@ -54,11 +50,9 @@ public class StudentDB extends Database {
         this.courseCode = "";
         this.score = 0;
         this.totalAverage = 0;
-        this.startClass = 0;
-        this.endClass = 0;
     }
 
-    public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear, String courseCode, float score, float totalAverage, int startClass, int endClass) {
+    public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear, String courseCode, float score, float totalAverage) {
         this.studentId = studentId;
         this.username = username;
         this.password = password;
@@ -70,19 +64,16 @@ public class StudentDB extends Database {
         this.courseCode = courseCode;
         this.score = score;
         this.totalAverage = totalAverage;
-        this.startClass = startClass;
-        this.endClass = endClass;
     }
 
     public boolean addStu() throws SQLException {
-        if (checkStuWithUsername() || checkStuWithStudentId()) {
+        if (checkStuWithUsername(username) || checkStuWithStudentId()) {
             return false;
         } else {
             super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
-                    "CourseCode, Score, TotalAverage, StartClass, EndClass) VALUES " +
-                    "(" + studentId + ", '" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', '" +
-                    majorSubject + "', '" + college + "', " + enteringYear + ", '" +
-                    courseCode + "', " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
+                    "CourseCode, Score, TotalAverage) VALUES " + "(" + studentId + ", '" + username + "', '" + password +
+                    "', '" + firstName + "', '" + lastName + "', '" + majorSubject + "', '" + college + "', " + enteringYear +
+                    ", '" + courseCode + "', " + score + ", " + totalAverage + ")");
             super.write();
         }
 
@@ -92,15 +83,14 @@ public class StudentDB extends Database {
 
     public void addStuWithCourse() throws SQLException {
         super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
-                "CourseCode, Score, TotalAverage, StartClass, EndClass) VALUES " +
-                "(" + studentId + ", '" + username + "', '" + password + "', '" + firstName + "', '" + lastName + "', '" +
-                majorSubject + "', '" + college + "', " + enteringYear + ", '" +
-                courseCode + "', " + score + ", " + totalAverage + ", " + startClass + ", " + endClass + ")");
+                "CourseCode, Score, TotalAverage) VALUES " + "(" + studentId + ", '" + username + "', '" + password + "', '" +
+                firstName + "', '" + lastName + "', '" + majorSubject + "', '" + college + "', " + enteringYear + ", '" +
+                courseCode + "', " + score + ", " + totalAverage + ")");
         super.write();
         super.disconnect();
     }
     
-    public boolean checkStuWithUsername() throws SQLException {
+    public boolean checkStuWithUsername(String username) throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         if (super.isExist()) {
             super.disconnect();
@@ -122,42 +112,54 @@ public class StudentDB extends Database {
         return false;
     }
 
-    public boolean updateStu() throws SQLException {
-        if (!checkStuWithUsername() || !checkStuWithStudentId()) {
-            return false;
-        } else {
+    public boolean editInfo(String oldUsername) throws SQLException {
+        if (checkStuWithUsername(oldUsername) && !checkStuWithStudentId() && !checkStuWithUsername(username)) {
             super.setQuery("UPDATE Students SET StudentId = " + studentId + ", Username = '" + username + "', Password = '" + password +
                     "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
-                    "', College = '" + college + "', EnteringYear = " + enteringYear +
-                    "', CourseCode = '" + courseCode + "', Score = " + score + ", TotalAverage = " + totalAverage +
-                    ", StartClass = " + startClass + ", EndClass = " + endClass + " WHERE StudentId = " + studentId + " OR Username = '" + username + "'");
+                    "', College = '" + college + "', EnteringYear = " + enteringYear + " WHERE Username = '" + oldUsername + "'");
             super.write();
+            return true;
         }
 
         super.disconnect();
-        return true;
+        return false;
     }
 
-    public boolean removeStu() throws SQLException {
-        if (!checkStuWithUsername()) {
-            return false;
-        } else {
+    public void removeStu() throws SQLException {
+        if (checkStuWithUsername(username)) {
             super.setQuery("DELETE FROM Students WHERE Username = '" + username + "' AND CourseCode = '" + courseCode + "'");
             super.write();
+            super.disconnect();
         }
-
-        super.disconnect();
-        return true;
     }
 
-    public ResultSet findStu() throws SQLException {
-        super.setQuery("SELECT * FROM `Students` WHERE Username = '" + username + "'");
+    public ResultSet findStuWithUsername() throws SQLException {
+        super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         return super.read();
     }
 
     public ResultSet findScoreWithCode() throws SQLException {
         super.setQuery("SELECT Score FROM Students WHERE CourseCode = '" + courseCode + "'");
         return super.read();
+    }
+
+    public String findName() throws SQLException {
+        ResultSet resultSet = findStuWithUsername();
+        String firstName = "", lastName = "";
+        while (resultSet.next()) {
+            firstName = resultSet.getString("Firstname");
+            lastName = resultSet.getString("Lastname");
+        }
+        return firstName + " " + lastName;
+    }
+
+    public int findYear() throws SQLException {
+        ResultSet resultSet = findStuWithUsername();
+        int year = 0;
+        while (resultSet.next()) {
+            year = resultSet.getInt("EnteringYear");
+        }
+        return year;
     }
     
     public int getStudentId() {
@@ -198,10 +200,6 @@ public class StudentDB extends Database {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public String getMajorSubject() {
-        return majorSubject;
     }
 
     public void setMajorSubject(String majorSubject) {
@@ -246,22 +244,6 @@ public class StudentDB extends Database {
 
     public void setTotalAverage(float totalAverage) {
         this.totalAverage = totalAverage;
-    }
-
-    public int getStartClass() {
-        return startClass;
-    }
-
-    public void setStartClass(int startClass) {
-        this.startClass = startClass;
-    }
-
-    public int getEndClass() {
-        return endClass;
-    }
-
-    public void setEndClass(int endClass) {
-        this.endClass = endClass;
     }
 
     public String getName() {
