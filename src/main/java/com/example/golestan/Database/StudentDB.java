@@ -38,6 +38,12 @@ public class StudentDB extends Database {
         this.score = score;
     }
 
+    public StudentDB(int studentId, String name, float score) {
+        this.studentId = studentId;
+        this.name = name;
+        this.score = score;
+    }
+
     public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear) {
         this.studentId = studentId;
         this.username = username;
@@ -113,7 +119,12 @@ public class StudentDB extends Database {
     }
 
     public boolean editInfo(String oldUsername) throws SQLException {
-        if (checkStuWithUsername(oldUsername) && !checkStuWithStudentId() && !checkStuWithUsername(username)) {
+        boolean flag = false;
+        if (oldUsername.equals(username) || !checkStuWithUsername(username)) {
+            flag = true;
+        }
+
+        if (checkStuWithUsername(oldUsername) && !checkStuWithStudentId() && flag) {
             super.setQuery("UPDATE Students SET StudentId = " + studentId + ", Username = '" + username + "', Password = '" + password +
                     "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
                     "', College = '" + college + "', EnteringYear = " + enteringYear + " WHERE Username = '" + oldUsername + "'");

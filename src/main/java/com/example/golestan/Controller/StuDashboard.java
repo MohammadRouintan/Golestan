@@ -187,7 +187,7 @@ public class StuDashboard {
 
     @FXML
     void semesterClicked(ActionEvent event) throws SQLException {
-
+        score();
     }
 
     public void initialize() throws SQLException {
@@ -196,7 +196,6 @@ public class StuDashboard {
         showName.setText(studentDB.findName());
 
         register();
-        score();
         schedule();
 
         ObservableList<String> existSemester = FXCollections.observableArrayList();
@@ -272,7 +271,7 @@ public class StuDashboard {
                         String semester = resultSet1.getString("Semester");
                         int vahed = resultSet1.getInt("Vahed");
 
-                        if (semesterSelect.getValue() != null && semesterSelect.getValue().equals(semester)) {
+                        if (semesterSelect.getValue().equals(semester)) {
                             scoreList.add(new StudentDB(name, vahed, score));
                         }
                     }
