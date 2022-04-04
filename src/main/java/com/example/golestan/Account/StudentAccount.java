@@ -18,16 +18,16 @@ public class StudentAccount extends StudentDB {
         super.setUsername(username);
         super.setPassword(password);
 
-        if (!super.checkStuWithUsername()) {
+        if (!super.checkStuWithUsername(username)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER NOT FOUND !!\nPLEASE ENTER CORRECT USERNAME OR PASSWORD.");
             alert.show();
             return false;
         } else {
-            ResultSet resultSet = findStu();
+            ResultSet resultSet = findStuWithUsername();
             while (resultSet.next()) {
-                String str = resultSet.getString("Password");
-                if (str.equals(password)) {
+                String pass = resultSet.getString("Password");
+                if (pass.equals(password)) {
                     return true;
                 }
             }
@@ -53,7 +53,7 @@ public class StudentAccount extends StudentDB {
             return false;
         }
 
-        if (super.checkStuWithUsername()) {
+        if (super.checkStuWithUsername(username)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("USER ALREADY EXIST.\nYOU CANNOT USE THIS USERNAME !!");
             alert.show();
@@ -74,7 +74,7 @@ public class StudentAccount extends StudentDB {
         Pattern pattern;
         Matcher matcher;
 
-        pattern = Pattern.compile("^[0-9]+$");
+        pattern = Pattern.compile("^[0-9]{8,9}$");
         matcher = pattern.matcher(studentId);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

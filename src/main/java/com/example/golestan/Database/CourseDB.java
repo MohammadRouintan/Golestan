@@ -102,15 +102,20 @@ public class CourseDB extends Database {
         return super.read();
     }
 
-    public ResultSet findCourseWithStu(String username) throws SQLException {
-        super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
-        return super.read();
-    }
-
     public ResultSet findCourseWithProf(String firstName, String lastName) throws SQLException {
         super.setQuery("SELECT Name, Code FROM Courses WHERE ProfessorFirstName = '" + firstName + "' AND " +
                 "ProfessorLastName = '" + lastName + "'");
         return super.read();
+    }
+
+    public int findYear() throws SQLException {
+        ResultSet resultSet = findCourseWithCode();
+        int year = 0;
+        while (resultSet.next()) {
+            String semester = resultSet.getString("Semester");
+            year = Integer.parseInt(semester.substring(semester.length() - 4, semester.length()));
+        }
+        return year;
     }
 
     public boolean checkValid(String name, String code, String vahed, String college, String semester, int startClass, int endClass) {

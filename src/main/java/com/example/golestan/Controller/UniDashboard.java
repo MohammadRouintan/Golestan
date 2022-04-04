@@ -225,8 +225,7 @@ public class UniDashboard {
         universityDB.setUsername(username);
         universityDB.setPassword(newPassword.getText());
         universityDB.updateUni(newUsername.getText());
-        SceneController control = new SceneController();
-        control.switchScene(MainApplication.window, "Login.fxml");
+        logoutClicked(event);
     }
 
     @FXML
