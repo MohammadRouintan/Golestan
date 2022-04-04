@@ -133,6 +133,17 @@ public class StudentDB extends Database {
         }
     }
 
+    public void addScore() throws SQLException {
+        super.setQuery("UPDATE Students SET Score = " + score + " WHERE StudentId = " + studentId + " AND CourseCode = '" + courseCode + "'");
+        super.write();
+        super.disconnect();
+    }
+
+    public ResultSet findCourseWithCode() throws SQLException {
+        super.setQuery("SELECT * FROM Students WHERE CourseCode = '" + courseCode + "'");
+        return super.read();
+    }
+
     public ResultSet findStuWithUsername() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         return super.read();
