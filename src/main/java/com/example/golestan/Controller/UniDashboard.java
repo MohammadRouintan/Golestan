@@ -240,6 +240,12 @@ public class UniDashboard {
         control.closeProgram(MainApplication.window);
     }
 
+    @FXML
+    void currentClicked(ActionEvent event) throws SQLException {
+        SemesterDB semester = semesterList.getSelectionModel().getSelectedItem();
+        semester.setCurrent();
+    }
+
     public void initialize() throws SQLException {
         ObservableList<String> semesterName = FXCollections.observableArrayList("Fall", "Winter", "Summer");
         semsterNameInput.setItems(semesterName);
@@ -270,8 +276,11 @@ public class UniDashboard {
             while (resultSet.next()) {
                 String name = resultSet.getString("Name");
                 int year = resultSet.getInt("Year");
+                String current = resultSet.getString("Current");
                 semesters.add(new SemesterDB(name, year));
-                existSemester.add(name + year);
+                if (current.equals("yes")) {
+                    existSemester.add(name + year);
+                }
             }
 
             nameSemester.setCellValueFactory(new PropertyValueFactory<SemesterDB, String>("name"));

@@ -110,6 +110,11 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <Button fx:id="currentButton" layoutX="506.0" layoutY="350.0" mnemonicParsing="false" onAction="#currentClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Current" textFill="WHITE">
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </content></Tab>

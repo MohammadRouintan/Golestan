@@ -39,6 +39,43 @@ public class SemesterDB extends Database {
         return false;
     }
 
+    public String currentSemester() throws SQLException {
+        super.setQuery("SELECT * FROM Semesters");
+        ResultSet resultSet = super.read();
+        while (resultSet.next()) {
+            String name = resultSet.getString("Name");
+            int year = resultSet.getInt("Year");
+            String Current = resultSet.getString("Current");
+            if (Current.equals("yes")) {
+                return name + year;
+            }
+        }
+        return "";
+    }
+
+    public void setCurrent() throws SQLException {
+        deleteCurrent();
+        super.setQuery("UPDATE Semesters SET Current = 'yes' WHERE Name = '" + name + "' AND  Year = " + year);
+        super.write();
+        super.disconnect();
+    }
+
+    private void deleteCurrent() throws SQLException {
+        super.setQuery("SELECT * FROM Semesters");
+        ResultSet resultSet = super.read();
+        while (resultSet.next()) {
+            String name = resultSet.getString("Name");
+            int year = resultSet.getInt("Year");
+            String Current = resultSet.getString("Current");
+            if (Current.equals("yes")) {
+                super.setQuery("UPDATE Semesters SET Current = '' WHERE Name = '" + name + "' AND Year = " + year);
+                super.write();
+                super.disconnect();
+                break;
+            }
+        }
+    }
+
     public ResultSet semesterList() throws SQLException {
         super.setQuery("SELECT * FROM Semesters");
         ResultSet resultSet = super.read();

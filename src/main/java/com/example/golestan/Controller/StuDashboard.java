@@ -105,10 +105,19 @@ public class StuDashboard {
     private Label showName;
 
     @FXML
-    private Label limit;
+    private Label max;
+
+    @FXML
+    private Label min;
 
     @FXML
     private Label received;
+
+    @FXML
+    private Label semester;
+
+    @FXML
+    private Label totalAverage;
 
     @FXML
     void addClicked(ActionEvent event) throws NullPointerException, SQLException {
@@ -128,6 +137,7 @@ public class StuDashboard {
         }
 
         student.setCourseCode(course.getCode());
+        student.setSemester(course.getSemester());
         if (student.getStudentId() != 0) {
             student.addStuWithCourse();
         }
@@ -196,16 +206,36 @@ public class StuDashboard {
         score();
     }
 
+    @FXML
+    void finishClicked(ActionEvent event) throws SQLException {
+        StudentDB studentDB = new StudentDB();
+        if (Integer.parseInt(received.getText()) < Integer.parseInt(min.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("YOU MUST SELECT MORE THAN " + min.getText() + " VAHED");
+            alert.show();
+        } else if (Integer.parseInt(received.getText()) > Integer.parseInt(max.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("YOU MUST SELECT LESS THAN " + max.getText() + " VAHED");
+            alert.show();
+        } else {
+            studentDB.setUsername(username);
+            studentDB.setStatus("END");
+            studentDB.changeStatus(semester.getText());
+        }
+        initialize();
+    }
+
     public void initialize() throws SQLException {
         StudentDB studentDB = new StudentDB();
+        SemesterDB semesterDB = new SemesterDB();
         studentDB.setUsername(username);
         showName.setText(studentDB.findName());
-
+        semester.setText(semesterDB.currentSemester());
         register();
         schedule();
+        maxAndMin();
 
         ObservableList<String> existSemester = FXCollections.observableArrayList();
-        SemesterDB semesterDB = new SemesterDB();
         ResultSet resultSet4 = semesterDB.semesterList();
         if (resultSet4.isBeforeFirst()) {
             while (resultSet4.next()) {
@@ -229,6 +259,7 @@ public class StuDashboard {
         studentDB.setUsername(username);
         CourseDB courseDB = new CourseDB();
         ResultSet resultSet = courseDB.findCourse();
+        SemesterDB semesterDB = new SemesterDB();
 
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
@@ -238,7 +269,12 @@ public class StuDashboard {
                 String semester = resultSet.getString("Semester");
                 int vahed = resultSet.getInt("Vahed");
                 courseDB.setCode(code);
-                if (courseDB.findYear() >= studentDB.findYear()) {
+                studentDB.setCourseCode(code);
+                if (studentDB.findStatus().equals("END")) {
+                    break;
+                }
+
+                if (semester.equals(semesterDB.currentSemester()) && courseDB.findYear() >= studentDB.findYear()) {
                     registerList.add(new CourseDB(name, code, professor, vahed, semester));
                 }
             }
@@ -258,6 +294,7 @@ public class StuDashboard {
         ObservableList<StudentDB> scoreList = FXCollections.observableArrayList();
         studentDB.setUsername(username);
         ResultSet resultSet = studentDB.findStuWithUsername();
+        float totalAve = 0;
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
                 String code = resultSet.getString("CourseCode");
@@ -279,6 +316,7 @@ public class StuDashboard {
 
                         if (semesterSelect.getValue().equals(semester)) {
                             scoreList.add(new StudentDB(name, vahed, score));
+                            totalAve += score * vahed;
                         }
                     }
                 }
@@ -289,6 +327,11 @@ public class StuDashboard {
             scoreColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Float>("score"));
             scoreTable.setItems(scoreList);
         }
+        totalAve /= Integer.parseInt(received.getText());
+        totalAverage.setText(String.format("%.2f", totalAve));
+        studentDB.setSemester(semesterSelect.getValue());
+        studentDB.setTotalAverage(Float.parseFloat(totalAverage.getText()));
+        studentDB.addTotalAverage();
     }
 
     void schedule() throws SQLException {
@@ -298,6 +341,7 @@ public class StuDashboard {
         studentDB.setUsername(username);
         ResultSet resultSet1 = studentDB.findStuWithUsername();
         if (resultSet1.isBeforeFirst()) {
+            int vahed = 0;
             while (resultSet1.next()) {
                 String code = resultSet1.getString("CourseCode");
                 if (!code.equals("")) {
@@ -305,22 +349,50 @@ public class StuDashboard {
                     ResultSet resultSet2 = courseDB.findCourseWithCode();
                     while (resultSet2.next()) {
                         String name = resultSet2.getString("Name");
-                        String vahed = resultSet2.getString("Vahed");
-                        String semester = resultSet2.getString("Semester");
-                        int number =  Integer.parseInt(semester.substring(semester.length() - 4, semester.length()));
+                        String term = resultSet2.getString("Semester");
                         String time = resultSet2.getString("StartClass") + " - " + resultSet2.getString("EndClass");
                         String days = resultSet2.getString("Day");
-                        date.add(new CourseDB(name, days, time));
+                        if (term.equals(semester.getText())) {
+                            date.add(new CourseDB(name, days, time));
+                            vahed += resultSet2.getInt("Vahed");
+                        }
                     }
                 }
             }
 
+            received.setText(String.valueOf(vahed));
             courseColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("name"));
             daysColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("day"));
             timeColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("time"));
             courseDate.setItems(date);
         }
+    }
 
+    void maxAndMin() throws SQLException {
+        StudentDB studentDB = new StudentDB();
+        studentDB.setUsername(username);
+        boolean flag = semester.getText().contains("Summer");
+        if (flag) {
+            max.setText(String.valueOf(6));
+            min.setText(String.valueOf(3));
+        } else {
+            String term = semester.getText();
+            String name = term.substring(0, term.length() - 4);
+            int year = Integer.parseInt(term.substring(term.length() - 4, term.length()));
+            if (name.equals("Fall")) {
+                studentDB.setSemester("Winter" + (year - 1));
+            } else if (name.equals("Winter")) {
+                studentDB.setSemester("Fall" + year);
+            }
+
+            if (studentDB.findTotalAve() >= 17) {
+                max.setText(String.valueOf(24));
+            } else {
+                max.setText(String.valueOf(20));
+            }
+
+            min.setText(String.valueOf(12));
+        }
     }
 }
 

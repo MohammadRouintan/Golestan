@@ -52,39 +52,55 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </TableView>
-                                <Button fx:id="addButton" layoutX="658.0" layoutY="245.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
+                                <Button fx:id="addButton" layoutX="658.0" layoutY="238.0" mnemonicParsing="false" onAction="#addClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Add" textFill="WHITE">
                                     <font>
                                         <Font size="21.0" />
                                     </font>
                                 </Button>
-                                <Button fx:id="removeButton" layoutX="658.0" layoutY="305.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
+                                <Button fx:id="removeButton" layoutX="658.0" layoutY="281.0" mnemonicParsing="false" onAction="#removeClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Remove" textFill="WHITE">
                                     <font>
                                         <Font size="21.0" />
                                     </font>
                                 </Button>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0c31a1" height="156.0" layoutX="639.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="161.0" />
-                        <Label layoutX="669.0" layoutY="35.0" text="Limit :" textFill="WHITE">
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0c31a1" height="195.0" layoutX="639.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="161.0" />
+                        <Label layoutX="669.0" layoutY="35.0" text="Max :" textFill="WHITE">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
-                        <Label layoutX="656.0" layoutY="94.0" text="Received :" textFill="WHITE">
+                        <Label layoutX="656.0" layoutY="143.0" text="Received :" textFill="WHITE">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
                         <Circle fill="WHITE" layoutX="750.0" layoutY="47.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Circle fill="WHITE" layoutX="768.0" layoutY="106.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
-                        <Label fx:id="limit" layoutX="735.0" layoutY="30.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
+                        <Circle fill="WHITE" layoutX="768.0" layoutY="156.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="max" alignment="CENTER" layoutX="735.0" layoutY="30.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Label>
-                        <Label fx:id="received" layoutX="753.0" layoutY="90.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
+                        <Label fx:id="received" alignment="CENTER" layoutX="753.0" layoutY="139.0" prefHeight="33.0" prefWidth="31.0" text="0" textFill="#0c31a1">
                            <font>
                               <Font size="26.0" />
                            </font>
                         </Label>
+                        <Label layoutX="674.0" layoutY="89.0" text="Min :" textFill="WHITE">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </Label>
+                        <Circle fill="WHITE" layoutX="751.0" layoutY="102.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="min" alignment="CENTER" layoutX="736.0" layoutY="86.0" prefHeight="33.0" prefWidth="31.0" textFill="#0c31a1">
+                           <font>
+                              <Font size="26.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="658.0" layoutY="333.0" mnemonicParsing="false" onAction="#finishClicked" prefWidth="120.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Finish" textFill="WHITE">
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content></Tab>
@@ -113,6 +129,18 @@
                                     </columnResizePolicy>
                                 </TableView>
                                 <ComboBox fx:id="semesterSelect" layoutX="39.0" layoutY="80.0" onAction="#semesterClicked" prefHeight="37.0" prefWidth="191.0" promptText="Semester" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#0c31a1" height="155.0" layoutX="19.0" layoutY="216.0" stroke="BLACK" strokeType="INSIDE" width="235.0" />
+                        <Label layoutX="46.0" layoutY="242.0" text="Total Average :" textFill="WHITE">
+                           <font>
+                              <Font size="29.0" />
+                           </font>
+                        </Label>
+                        <Ellipse fill="WHITE" layoutX="137.0" layoutY="321.0" radiusX="74.0" radiusY="44.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Label fx:id="totalAverage" alignment="CENTER" layoutX="95.0" layoutY="300.0" text="0" textAlignment="CENTER" textFill="#0c31a1">
+                           <font>
+                              <Font size="34.0" />
+                           </font>
+                        </Label>
                             </children>
                         </AnchorPane>
                     </content></Tab>
@@ -232,17 +260,33 @@
     <top>
         <AnchorPane prefHeight="105.0" prefWidth="800.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="84.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="35.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../img/book-512.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="320.0" layoutY="25.0" text="Student" textFill="WHITE">
+                <Label layoutX="160.0" layoutY="25.0" text="Student" textFill="WHITE">
                     <font>
                         <Font size="48.0" />
                     </font>
                 </Label>
-                <Label fx:id="showName" layoutX="618.0" layoutY="47.0" text="Label" textFill="WHITE" />
+                <Label fx:id="showName" layoutX="520.0" layoutY="28.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label layoutX="400.0" layoutY="64.0" text="Current Semester  :" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label fx:id="semester" layoutX="582.0" layoutY="64.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label fx:id="showName1" layoutX="400.0" layoutY="28.0" text="WELCOME !" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </top>

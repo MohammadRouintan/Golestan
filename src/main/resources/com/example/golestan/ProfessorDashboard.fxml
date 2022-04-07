@@ -93,7 +93,9 @@
                         <Font size="48.0" />
                     </font>
                 </Label>
-                <Label fx:id="showName" layoutX="634.0" layoutY="47.0" text="Label" textFill="WHITE" />
+                <Label fx:id="showName" layoutX="599.0" layoutY="47.0" text="Label" textFill="WHITE" />
+            <Label layoutX="599.0" layoutY="64.0" text="Current Semester  :" textFill="WHITE" />
+            <Label fx:id="semester" layoutX="709.0" layoutY="65.0" text="Label" textFill="WHITE" />
             </children>
         </AnchorPane>
     </top>
