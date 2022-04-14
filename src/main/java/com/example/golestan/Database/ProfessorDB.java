@@ -70,21 +70,6 @@ public class ProfessorDB extends Database {
         return true;
     }
 
-    public boolean updateProf() throws SQLException {
-        if (!checkProfWithUsername()) {
-            return false;
-        } else {
-            super.setQuery("UPDATE Professors SET Username = '" + username + "', Password = '" + password +
-                    "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', Goroh = " + goroh +
-                    ", College = '" + college + "', Semester = '" + semester + "', Course = '" + course +
-                    "', StartClass = " + startClass + ", EndClass = " + endClass + " WHERE Username = '" + username + "'");
-            super.write();
-        }
-
-        super.disconnect();
-        return true;
-    }
-
     public boolean removeProf() throws SQLException {
         if (!checkProfWithUsername()) {
             return false;
@@ -116,6 +101,40 @@ public class ProfessorDB extends Database {
     public ResultSet findProfWithCollege() throws SQLException {
         super.setQuery("SELECT * FROM Professors WHERE College = '" + college + "'");
         return super.read();
+    }
+
+    public boolean editInfo(String oldUsername) throws SQLException {
+        boolean flag = false;
+        if (oldUsername.equals(username) || !checkProfWithUsername()) {
+            flag = true;
+        }
+
+        String user = getUsername();
+        setUsername(oldUsername);
+        String[] name = findName().split(" ");
+        if (checkProfWithUsername() && flag) {
+            super.setQuery("UPDATE Professors SET Username = '" + user + "', Password = '" + password +
+                    "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', Goroh = " + goroh +
+                    ", College = '" + college + "' WHERE Username = '" + oldUsername + "'");
+            super.write();
+            super.setQuery("UPDATE Courses SET ProfessorFirstName = '" + firstName + "', ProfessorLastName = '" + lastName + "'"
+                        + " WHERE ProfessorFirstName = '" + name[0] + "' AND ProfessorLastName = '" + name[1] + "'");
+            super.write();
+            super.disconnect();
+            return true;
+        }
+
+        return false;
+    }
+
+    public String findName() throws SQLException {
+        ResultSet resultSet = findProf();
+        String firstname = "", lastname = "";
+        while (resultSet.next()) {
+            firstname = resultSet.getString("Firstname");
+            lastname = resultSet.getString("Lastname");
+        }
+        return firstname + " " + lastname;
     }
 
     public String getUsername() {

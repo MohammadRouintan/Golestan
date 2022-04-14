@@ -1,11 +1,9 @@
 package com.example.golestan.Controller;
 
-import com.example.golestan.Database.CourseDB;
-import com.example.golestan.Database.ProfessorDB;
-import com.example.golestan.Database.StudentDB;
+import com.example.golestan.Account.ProfessorAccount;
+import com.example.golestan.Account.StudentAccount;
+import com.example.golestan.Database.*;
 import com.example.golestan.MainApplication;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,6 +56,58 @@ public class ProfDashboard {
     private Label showName;
 
     @FXML
+    private Label semester;
+
+    @FXML
+    private TextField firstnameInput;
+
+    @FXML
+    private TextField gruopInput;
+
+    @FXML
+    private TextField lastnameInput;
+
+    @FXML
+    private PasswordField passwordInput;
+
+    @FXML
+    private TextField usernameInput;
+
+    @FXML
+    private ComboBox<String> collegeInput;
+
+    @FXML
+    void editClicked(ActionEvent event) throws SQLException, IOException {
+        ProfessorDB professorDB = new ProfessorDB();
+        ProfessorAccount professorAccount = new ProfessorAccount();
+        boolean valid = professorAccount.checkValid(usernameInput.getText(),
+                passwordInput.getText(),
+                firstnameInput.getText(),
+                lastnameInput.getText(),
+                gruopInput.getText(),
+                collegeInput.getValue());
+
+        boolean flag = false;
+        if (valid) {
+            professorDB.setUsername(usernameInput.getText());
+            professorDB.setPassword(passwordInput.getText());
+            professorDB.setFirstName(firstnameInput.getText());
+            professorDB.setLastName(lastnameInput.getText());
+            professorDB.setGoroh(Integer.parseInt(gruopInput.getText()));
+            professorDB.setCollege(collegeInput.getValue());
+            flag = professorDB.editInfo(username);
+        }
+
+        if (flag) {
+            logoutClicked(event);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("THIS INFORMATION IS INVALID OR AlREADY EXIST !!");
+            alert.show();
+        }
+    }
+
+    @FXML
     void logoutClicked(ActionEvent event) throws IOException {
         SceneController control = new SceneController();
         control.switchScene(MainApplication.window, "Login.fxml");
@@ -79,18 +129,21 @@ public class ProfDashboard {
 
     public void initialize() throws SQLException {
         ProfessorDB professorDB = new ProfessorDB();
+        SemesterDB semesterDB = new SemesterDB();
         professorDB.setUsername(username);
         ResultSet resultSet1 = professorDB.findProf();
-        String firstname = "", lastname = "";
-        while (resultSet1.next()) {
-            firstname = resultSet1.getString("Firstname");
-            lastname = resultSet1.getString("Lastname");
-            showName.setText(firstname + " " + lastname);
-        }
+        showName.setText(professorDB.findName());
+        semester.setText(semesterDB.currentSemester());
+        
+        ObservableList<String> existCollege = FXCollections.observableArrayList();
+        CollegeDB collegeDB = new CollegeDB();
+        existCollege.addAll(collegeDB.collegeNames());
+        collegeInput.setItems(existCollege);
 
         CourseDB courseDB = new CourseDB();
         ObservableList<CourseDB> courseNames = FXCollections.observableArrayList();
-        ResultSet resultSet = courseDB.findCourseWithProf(firstname, lastname);
+        String[] names = professorDB.findName().split(" ");
+        ResultSet resultSet = courseDB.findCourseWithProf(names[0], names[1]);
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
                 String name = resultSet.getString("Name");

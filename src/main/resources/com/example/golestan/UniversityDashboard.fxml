@@ -20,9 +20,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.UniDashboard">
    <bottom>
-      <TabPane prefHeight="497.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane prefHeight="520.0" prefWidth="736.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Make Faculty">
+          <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #1e90ff#1e90ff;" text="Make Faculty">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
@@ -64,7 +64,7 @@
                      </children>
                   </AnchorPane>
                </content></Tab>
-          <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Make Semester">
+          <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #1e90ff#1e90ff;" text="Make Semester">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
@@ -118,7 +118,7 @@
                      </children>
                   </AnchorPane>
                </content></Tab>
-            <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Make Course">
+            <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #1e90ff#1e90ff;" text="Make Course">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
@@ -161,7 +161,6 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="semesterInput" layoutX="120.0" layoutY="197.0" prefWidth="150.0" />
                         <Label layoutX="27.0" layoutY="288.0" text="Day :" textFill="#0c31a1">
                            <font>
                               <Font size="18.0" />
@@ -221,13 +220,14 @@
                         <ComboBox fx:id="collegeInput" layoutX="104.0" layoutY="156.0" onAction="#collegeSelected" prefWidth="150.0" />
                         <ComboBox fx:id="startInput" layoutX="127.0" layoutY="242.0" prefWidth="150.0" promptText="Start" />
                         <ComboBox fx:id="endInput" layoutX="391.0" layoutY="243.0" prefWidth="150.0" promptText="End" />
+                        <ComboBox fx:id="semesterInput" layoutX="113.0" layoutY="196.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Edit Info">
+            <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10; -fx-background-color: #1e90ff#1e90ff #1e90ff#1e90ff;" text="Edit Info">
                <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="431.0" prefWidth="800.0">
                      <children>
                         <Button fx:id="quitButton" layoutX="737.0" layoutY="424.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
                            <font>

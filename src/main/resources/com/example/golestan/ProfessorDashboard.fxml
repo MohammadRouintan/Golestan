@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -67,12 +70,53 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                                <Ellipse fill="DODGERBLUE" layoutX="400.0" layoutY="69.0" radiusX="162.0" radiusY="42.0" stroke="BLACK" strokeType="INSIDE" />
-                                <Label layoutX="350.0" layoutY="49.0" text="Edit Info" textFill="WHITE">
+                                <Ellipse fill="DODGERBLUE" layoutX="400.0" layoutY="56.0" radiusX="139.0" radiusY="42.0" stroke="BLACK" strokeType="INSIDE" />
+                                <Label layoutX="349.0" layoutY="37.0" text="Edit Info" textFill="WHITE">
                                     <font>
                                         <Font size="30.0" />
                                     </font>
                                 </Label>
+                        <TextField fx:id="firstnameInput" layoutX="167.0" layoutY="119.0" prefHeight="40.0" prefWidth="200.0" promptText="Firstname" />
+                        <Label layoutX="20.0" layoutY="126.0" text="New Firstname :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="20.0" layoutY="178.0" text="New Lastname :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="lastnameInput" layoutX="167.0" layoutY="173.0" prefHeight="40.0" prefWidth="200.0" promptText="Lastname" />
+                        <TextField fx:id="usernameInput" layoutX="537.0" layoutY="119.0" prefHeight="40.0" prefWidth="200.0" promptText="Username" />
+                        <Label layoutX="386.0" layoutY="126.0" text="New Username :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="389.0" layoutY="178.0" text="New Password :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <PasswordField fx:id="passwordInput" layoutX="537.0" layoutY="173.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
+                        <Label layoutX="51.0" layoutY="229.0" text="New Group :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="gruopInput" layoutX="167.0" layoutY="226.0" prefHeight="40.0" prefWidth="200.0" promptText="Group" />
+                        <ComboBox fx:id="collegeInput" layoutX="537.0" layoutY="226.0" prefHeight="40.0" prefWidth="200.0" promptText="College" />
+                        <Label layoutX="406.0" layoutY="232.0" text="New College :" textFill="#0c31a1">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Button alignment="CENTER" layoutX="303.0" layoutY="303.0" mnemonicParsing="false" onAction="#editClicked" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Edit &amp; Restart" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                     </content>
@@ -83,19 +127,33 @@
     <top>
         <AnchorPane prefHeight="105.0" prefWidth="800.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="84.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="39.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../img/book-512.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="304.0" layoutY="23.0" text="Professor" textFill="WHITE">
+                <Label layoutX="177.0" layoutY="23.0" text="Professor" textFill="WHITE">
                     <font>
                         <Font size="48.0" />
                     </font>
                 </Label>
-                <Label fx:id="showName" layoutX="599.0" layoutY="47.0" text="Label" textFill="WHITE" />
-            <Label layoutX="599.0" layoutY="64.0" text="Current Semester  :" textFill="WHITE" />
-            <Label fx:id="semester" layoutX="709.0" layoutY="65.0" text="Label" textFill="WHITE" />
+                <Label fx:id="showName" layoutX="550.0" layoutY="36.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label layoutX="426.0" layoutY="62.0" text="Current Semester  :" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label fx:id="semester" layoutX="608.0" layoutY="64.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+            <Label layoutX="426.0" layoutY="35.0" text="WELCOME !" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </top>

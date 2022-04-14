@@ -89,7 +89,7 @@ public class UniDashboard {
     private Button quitButton;
 
     @FXML
-    private ChoiceBox<String> semesterInput;
+    private ComboBox<String> semesterInput;
 
     @FXML
     private TableView<SemesterDB> semesterList;
