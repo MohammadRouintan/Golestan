@@ -216,7 +216,7 @@ public class StudentDB extends Database implements Users {
     // This function check that course with this username and course code exists or not.
     public boolean checkExistCourse() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE CourseCode = '" + courseCode + "' AND Username = '" + username + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }

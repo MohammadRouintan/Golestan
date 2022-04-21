@@ -32,9 +32,5 @@ public abstract class Database {
         return statement.executeQuery(this.query);
     }
 
-    public boolean isExist() throws SQLException {
-        return read().isBeforeFirst();
-    }
-
     public abstract void addToDatabase() throws SQLException;
 }
