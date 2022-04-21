@@ -1,14 +1,13 @@
 package com.example.golestan.Controller;
 
+import com.example.golestan.Account.UniversityAccount;
 import com.example.golestan.Database.*;
 import com.example.golestan.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,284 +15,289 @@ import java.sql.SQLException;
 public class UniDashboard {
 
     private static String username;
-
-    public static String getUsername() {
-        return username;
-    }
-
     public static void setUsername(String username) {
         UniDashboard.username = username;
     }
 
+    // Make Faculty
     @FXML
-    private TextField codeInput;
-
-    @FXML
-    private ComboBox<String> collegeInput;
-
-    @FXML
-    private Button createCourseButton;
-
-    @FXML
-    private Button createFacultyButton;
-
-    @FXML
-    private Button createSemesterButton;
-
-    @FXML
-    private ComboBox<String> dayInput;
-
-    @FXML
-    private Button editandrestart;
-
-    @FXML
-    private ComboBox<Integer> endInput;
+    private TextField facultyNameInput;
 
     @FXML
     private TableView<CollegeDB> facultyList;
 
     @FXML
-    private ComboBox<String> profName;
+    private TableColumn<CollegeDB, String> facultyNames;
+
+    // Make Semester
+    @FXML
+    private ComboBox<String> semesterNameInput;
 
     @FXML
-    private TextField firstnameProfInput;
-
-    @FXML
-    private TextField lastnameProfInput;
-
-    @FXML
-    private Button logoutButton;
-
-    @FXML
-    private TextField nameCourseInput;
-
-    @FXML
-    private TableColumn<CollegeDB, String> nameFaculty;
-
-    @FXML
-    private TextField nameInput;
-
-    @FXML
-    private TableColumn<SemesterDB, String> nameSemester;
-
-    @FXML
-    private TextField newName;
-
-    @FXML
-    private PasswordField newPassword;
-
-    @FXML
-    private TextField newUsername;
-
-    @FXML
-    private Button quitButton;
-
-    @FXML
-    private ComboBox<String> semesterInput;
+    private ComboBox<Integer> semesterYearInput;
 
     @FXML
     private TableView<SemesterDB> semesterList;
 
     @FXML
-    private ChoiceBox<Integer> semesterYearInput;
+    private TableColumn<SemesterDB, String> semesterNames;
 
     @FXML
-    private ChoiceBox<String> semsterNameInput;
+    private TableColumn<SemesterDB, Integer> semesterYears;
+
+    // Make Course
+    @FXML
+    private TextField courseNameInput;
 
     @FXML
-    private ComboBox<Integer> startInput;
+    private TextField courseCodeInput;
 
     @FXML
-    private TextField vahedInput;
+    private TextField courseUnitInput;
 
     @FXML
-    private Label nameLabel;
+    private ComboBox<String> courseFacultyInput;
 
     @FXML
-    private TableColumn<SemesterDB, Integer> yearSemester;
+    private ComboBox<String> courseSemesterInput;
 
     @FXML
-    private CheckBox sat;
+    private ComboBox<Integer> courseStartInput;
 
     @FXML
-    private CheckBox sun;
+    private ComboBox<Integer> courseEndInput;
 
     @FXML
-    private CheckBox mon;
+    private ComboBox<String> courseProfInput;
 
     @FXML
-    private CheckBox tue;
+    private CheckBox sat, sun, mon, tue, wed;
+
+    // Edit Info
+    @FXML
+    private TextField newNameInput;
 
     @FXML
-    private CheckBox wed;
+    private TextField newUsernameInput;
 
     @FXML
-    void collegeSelected(ActionEvent event) throws SQLException {
+    private PasswordField newPasswordInput;
+
+    // Labels
+    @FXML
+    private Label showName;
+
+    @FXML
+    private Label showSemester;
+
+    @FXML // This function find professor of selected faculty.
+    void facultySelected() throws SQLException {
         ProfessorDB professorDB = new ProfessorDB();
-        professorDB.setCollege(collegeInput.getValue());
-        ResultSet resultSet1 = professorDB.findProfWithCollege();
+        professorDB.setCollege(courseFacultyInput.getValue());
         ObservableList<String> profList = FXCollections.observableArrayList();
-        if (resultSet1.isBeforeFirst()) {
-            while (resultSet1.next()) {
-                String firstname = resultSet1.getString("Firstname");
-                String lastname = resultSet1.getString("Lastname");
+        ResultSet resultSet = professorDB.findProfWithCollege();
+
+        if (resultSet.isBeforeFirst()) {
+            while (resultSet.next()) {
+                String firstname = resultSet.getString("Firstname");
+                String lastname = resultSet.getString("Lastname");
                 profList.add(firstname + " " + lastname);
             }
-            profName.setItems(profList);
+
+            courseProfInput.setItems(profList);
         } else {
             profList.removeAll();
-            profName.setItems(profList);
+            courseProfInput.setItems(profList);
         }
     }
 
-    @FXML
-    void createCourseClicked(ActionEvent event) throws SQLException {
+    @FXML // This function create a faculty.
+    void createFacultyClicked() throws SQLException {
+        CollegeDB collegeDB = new CollegeDB();
+        collegeDB.setName(facultyNameInput.getText());
+
+        if (collegeDB.checkValid()) { collegeDB.addToDatabase(); }
+        initialize();
+    }
+
+    @FXML // This function create a semester with name and year.
+    void createSemesterClicked() throws SQLException {
+        SemesterDB semesterDB = new SemesterDB();
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (semesterNameInput.getValue() != null && semesterYearInput.getValue() != null) {
+            semesterDB.setName(semesterNameInput.getValue());
+            semesterDB.setYear(semesterYearInput.getValue());
+            if (!semesterDB.checkSemester()) { semesterDB.addToDatabase(); }
+        } else if (semesterNameInput.getValue() == null && semesterYearInput.getValue() == null) {
+            alert.setContentText("PLEASE ENTER NAME AND YEAR !!");
+            alert.show();
+        } else if (semesterNameInput.getValue() == null) {
+            alert.setContentText("PLEASE ENTER NAME !!");
+            alert.show();
+        } else {
+            alert.setContentText("PLEASE ENTER YEAR !!");
+            alert.show();
+        }
+
+        initialize();
+    }
+
+    @FXML // This function set current semester.
+    void currentClicked() throws SQLException {
+        SemesterDB semesterDB = semesterList.getSelectionModel().getSelectedItem();
+        semesterDB.setCurrent();
+        showSemester.setText(semesterDB.currentSemester());
+        initialize();
+    }
+
+    @FXML // This function create a course with information.
+    void createCourseClicked() throws SQLException {
         CourseDB courseDB = new CourseDB();
-        boolean valid = courseDB.checkValid(nameCourseInput.getText(),
-                codeInput.getText(),
-                vahedInput.getText(),
-                collegeInput.getValue(),
-                semesterInput.getValue(),
-                startInput.getValue(),
-                endInput.getValue());
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        if (courseFacultyInput.getValue() == null || courseSemesterInput.getValue() == null ||
+                courseStartInput.getValue() == null || courseEndInput.getValue() == null ||
+                courseProfInput.getValue() == null) {
+            alert.setContentText("PLEASE ENTER CORRECT INFORMATION !!");
+            alert.show();
+            return;
+        }
 
         String day = "";
-        if (sat.isSelected()) {
-            day += sat.getText() + " ";
-        }
-        if (sun.isSelected()) {
-            day += sun.getText() + " ";
-        }
-        if (mon.isSelected()) {
-            day += mon.getText() + " ";
-        }
-        if (tue.isSelected()) {
-            day += tue.getText() + " ";
-        }
-        if (wed.isSelected()) {
-            day += wed.getText();
+        if (sat.isSelected()) { day += sat.getText() + " "; }
+        if (sun.isSelected()) { day += sun.getText() + " "; }
+        if (mon.isSelected()) { day += mon.getText() + " "; }
+        if (tue.isSelected()) { day += tue.getText() + " "; }
+        if (wed.isSelected()) { day += wed.getText(); }
+
+        boolean valid = courseDB.checkValid(courseNameInput.getText(),
+                        courseCodeInput.getText(),
+                        courseUnitInput.getText(),
+                        courseStartInput.getValue(),
+                        courseEndInput.getValue(),
+                        day);
+
+        if (valid) {
+            String[] names = courseProfInput.getValue().split(" ");
+            courseDB.setName(courseNameInput.getText());
+            courseDB.setCode(courseCodeInput.getText());
+            courseDB.setUnit(Integer.parseInt(courseUnitInput.getText()));
+            courseDB.setProfFirstName(names[0]);
+            courseDB.setProfLastName(names[1]);
+            courseDB.setCollege(courseFacultyInput.getValue());
+            courseDB.setSemester(courseSemesterInput.getValue());
+            courseDB.setStartClass(courseStartInput.getValue());
+            courseDB.setEndClass(courseEndInput.getValue());
+            courseDB.setDay(day);
+        } else {
+            return;
         }
 
         boolean notExist = false;
-        if (valid) {
-            String[] split = profName.getValue().split(" ");
-            courseDB.setName(nameCourseInput.getText());
-            courseDB.setCode(codeInput.getText());
-            courseDB.setVahed(Integer.parseInt(vahedInput.getText()));
-            courseDB.setProfFirstName(split[0]);
-            courseDB.setProfLastName(split[1]);
-            courseDB.setCollege(collegeInput.getValue());
-            courseDB.setSemester(semesterInput.getValue());
-            courseDB.setStartClass(startInput.getValue());
-            courseDB.setEndClass(endInput.getValue());
-            courseDB.setDay(day);
-            notExist = courseDB.addCourse();
+        if (!courseDB.checkCourse()) {
+            courseDB.addToDatabase();
+            notExist = true;
         }
 
         if (notExist) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setAlertType(Alert.AlertType.INFORMATION);
             alert.setContentText("COURSE ADDED.");
             alert.show();
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS INFORMATION IS INVALID !!");
+            alert.setContentText("THIS COURSE ALREADY EXIST !!");
             alert.show();
         }
     }
 
-    @FXML
-    void createFacultyClicked(ActionEvent event) throws SQLException {
-        CollegeDB collegeDB = new CollegeDB();
-        collegeDB.setName(nameInput.getText());
-        collegeDB.addCollege();
-        initialize();
+    @FXML // This function edit information of university.
+    void editClicked() throws IOException, SQLException {
+        UniversityAccount universityAccount = new UniversityAccount();
+        universityAccount.setName(newNameInput.getText());
+        universityAccount.setUsername(newUsernameInput.getText());
+        universityAccount.setPassword(newPasswordInput.getText());
+
+        if (universityAccount.checkValid()) {
+            universityAccount.editInfo(username);
+            logoutClicked();
+        }
     }
 
     @FXML
-    void createSemesterClicked(ActionEvent event) throws SQLException {
-        SemesterDB semesterDB = new SemesterDB();
-        semesterDB.setName(semsterNameInput.getValue());
-        semesterDB.setYear(semesterYearInput.getValue());
-        semesterDB.addSemester();
-        initialize();
-    }
-
-    @FXML
-    void editClicked(ActionEvent event) throws IOException, SQLException {
-        UniversityDB universityDB = new UniversityDB();
-        universityDB.setName(newName.getText());
-        universityDB.setUsername(username);
-        universityDB.setPassword(newPassword.getText());
-        universityDB.updateUni(newUsername.getText());
-        logoutClicked(event);
-    }
-
-    @FXML
-    void logoutClicked(ActionEvent event) throws IOException {
+    void logoutClicked() throws IOException {
         SceneController control = new SceneController();
         control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
-    void quitClicked(ActionEvent event) {
+    void quitClicked() {
         SceneController control = new SceneController();
         control.closeProgram(MainApplication.window);
     }
 
-    @FXML
-    void currentClicked(ActionEvent event) throws SQLException {
-        SemesterDB semester = semesterList.getSelectionModel().getSelectedItem();
-        semester.setCurrent();
+    public void initialize() throws SQLException {
+        UniversityDB universityDB = new UniversityDB();
+        CollegeDB collegeDB = new CollegeDB();
+        SemesterDB semesterDB = new SemesterDB();
+        universityDB.setUsername(username);
+        showName.setText(universityDB.findName());
+        showSemester.setText(semesterDB.currentSemester());
+
+        setMakeSemesterBoxes();
+        setCollegeTable(collegeDB);
+        setCollegeBox(collegeDB);
+        setSemesterTable(semesterDB);
+        setSemesterBox(semesterDB);
+        setTimeBoxes();
     }
 
-    public void initialize() throws SQLException {
+    public void setMakeSemesterBoxes() {
         ObservableList<String> semesterName = FXCollections.observableArrayList("Fall", "Winter", "Summer");
-        semsterNameInput.setItems(semesterName);
+        semesterNameInput.setItems(semesterName);
 
         ObservableList<Integer> semesterYear = FXCollections.observableArrayList();
-        for (int i = 0; i < 50; i++) {
-            semesterYear.add(1385 + i);
-        }
+        for (int i = 0; i < 50; i++) { semesterYear.add(1385 + i); }
         semesterYearInput.setItems(semesterYear);
+    }
 
-
-        CollegeDB collegeDB = new CollegeDB();
-        ObservableList<String> existCollege = FXCollections.observableArrayList();
+    public void setCollegeTable(CollegeDB collegeDB) throws SQLException {
         ObservableList<CollegeDB> collegeNames = FXCollections.observableArrayList();
-        for (String name:collegeDB.collegeNames()) {
+        for (String name : collegeDB.collegeNames()) {
             collegeNames.add(new CollegeDB(name));
-            existCollege.add(name);
         }
-        collegeInput.setItems(existCollege);
-        nameFaculty.setCellValueFactory(new PropertyValueFactory<CollegeDB, String>("name"));
+        facultyNames.setCellValueFactory(new PropertyValueFactory<>("name"));
         facultyList.setItems(collegeNames);
+    }
 
-        SemesterDB semesterDB = new SemesterDB();
-        ObservableList<String> existSemester = FXCollections.observableArrayList();
+    public void setCollegeBox(CollegeDB collegeDB) throws SQLException {
+        ObservableList<String> existCollege = FXCollections.observableArrayList();
+        existCollege.addAll(collegeDB.collegeNames());
+        courseFacultyInput.setItems(existCollege);
+    }
+
+    public void setSemesterTable(SemesterDB semesterDB) throws SQLException {
         ObservableList<SemesterDB> semesters = FXCollections.observableArrayList();
-        ResultSet resultSet = semesterDB.semesterList();
-        if (resultSet.isBeforeFirst()) {
-            while (resultSet.next()) {
-                String name = resultSet.getString("Name");
-                int year = resultSet.getInt("Year");
-                String current = resultSet.getString("Current");
-                semesters.add(new SemesterDB(name, year));
-                if (current.equals("yes")) {
-                    existSemester.add(name + year);
-                }
-            }
-
-            nameSemester.setCellValueFactory(new PropertyValueFactory<SemesterDB, String>("name"));
-            yearSemester.setCellValueFactory(new PropertyValueFactory<SemesterDB, Integer>("year"));
-            semesterList.setItems(semesters);
+        for (String name : semesterDB.semesterList()) {
+            String[] names = name.split(" ");
+            semesters.add(new SemesterDB(names[0], Integer.parseInt(names[1])));
         }
-        semesterInput.setItems(existSemester);
+        semesterNames.setCellValueFactory(new PropertyValueFactory<>("name"));
+        semesterYears.setCellValueFactory(new PropertyValueFactory<>("year"));
+        semesterList.setItems(semesters);
+    }
 
+    public void setSemesterBox(SemesterDB semesterDB) throws SQLException {
+        ObservableList<String> existSemester = FXCollections.observableArrayList();
+        existSemester.add(semesterDB.currentSemester());
+        courseSemesterInput.setItems(existSemester);
+    }
+
+    public void setTimeBoxes() {
         ObservableList<Integer> times = FXCollections.observableArrayList();
         for (int i = 1; i <= 24; i++) {
             times.add(i);
         }
-        startInput.setItems(times);
-        endInput.setItems(times);
+        courseStartInput.setItems(times);
+        courseEndInput.setItems(times);
     }
 }

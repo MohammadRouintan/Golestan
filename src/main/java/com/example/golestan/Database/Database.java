@@ -5,20 +5,14 @@ import java.sql.*;
 public abstract class Database {
     private Connection connection;
     private Statement statement;
-    private String url;
     private String query;
-    private ResultSet resultSet;
-
-    public String getQuery() {
-        return query;
-    }
 
     public void setQuery(String query) {
         this.query = query;
     }
 
     private void connect() throws SQLException {
-        url = "jdbc:mysql://localhost:3306/Golestan";
+        String url = "jdbc:mysql://localhost:3306/Golestan";
         connection = DriverManager.getConnection(url, "Mohammad", "Mohammad");
         statement = connection.createStatement();
     }
@@ -35,11 +29,12 @@ public abstract class Database {
 
     public ResultSet read() throws SQLException {
         connect();
-        resultSet = statement.executeQuery(this.query);
-        return resultSet;
+        return statement.executeQuery(this.query);
     }
 
     public boolean isExist() throws SQLException {
         return read().isBeforeFirst();
     }
+
+    public abstract void addToDatabase() throws SQLException;
 }

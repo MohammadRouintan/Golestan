@@ -7,10 +7,11 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class SceneController {
     public void switchScene(Stage window, String fxml) throws IOException {
-        Parent pane = FXMLLoader.load(MainApplication.class.getResource(fxml));
+        Parent pane = FXMLLoader.load(Objects.requireNonNull(MainApplication.class.getResource(fxml)));
         window.getScene().setRoot(pane);
     }
 

@@ -2,19 +2,13 @@ package com.example.golestan.Controller;
 
 import com.example.golestan.Account.UniversityAccount;
 import com.example.golestan.MainApplication;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class SignupUni {
-
-    @FXML
-    private Button backButton;
 
     @FXML
     private TextField nameInput;
@@ -23,36 +17,32 @@ public class SignupUni {
     private PasswordField passwordInput;
 
     @FXML
-    private Button quitButton;
-
-    @FXML
-    private Button signupButton;
-
-    @FXML
     private TextField usernameInput;
 
     @FXML
-    void backClicked(ActionEvent event) throws IOException {
+    void backClicked() throws IOException {
         SceneController control = new SceneController();
         control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
-    void quitClicked(ActionEvent event) {
+    void quitClicked() {
         SceneController control = new SceneController();
         control.closeProgram(MainApplication.window);
     }
 
     @FXML
-    void signupClicked(ActionEvent event) throws SQLException, IOException {
+    void signupClicked() throws SQLException, IOException {
         SceneController control = new SceneController();
         UniversityAccount universityAccount = new UniversityAccount();
-        boolean valid = universityAccount.signup(nameInput.getText(),
-                usernameInput.getText(),
-                passwordInput.getText());
+        universityAccount.setName(nameInput.getText());
+        universityAccount.setUsername(usernameInput.getText());
+        universityAccount.setPassword(passwordInput.getText());
+        boolean valid = universityAccount.signup();
+
         if (valid) {
+            UniDashboard.setUsername(usernameInput.getText());
             control.switchScene(MainApplication.window, "UniversityDashboard.fxml");
         }
     }
-
 }

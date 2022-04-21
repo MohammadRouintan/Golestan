@@ -8,7 +8,6 @@ import com.example.golestan.Database.StudentDB;
 import com.example.golestan.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,37 +19,9 @@ import java.sql.SQLException;
 public class StuDashboard {
 
     private static String username;
-    public static String getUsername() {
-        return username;
-    }
     public static void setUsername(String username) {
         StuDashboard.username = username;
     }
-
-    // Edit Info
-    @FXML
-    private TextField enteringYearInput;
-
-    @FXML
-    private ComboBox<String> collegeInput;
-
-    @FXML
-    private TextField firstnameInput;
-
-    @FXML
-    private TextField lastnameInput;
-
-    @FXML
-    private TextField majorInput;
-
-    @FXML
-    private PasswordField passwordInput;
-
-    @FXML
-    private TextField studentidInput;
-
-    @FXML
-    private TextField usernameInput;
 
     // Register
     @FXML
@@ -60,16 +31,32 @@ public class StuDashboard {
     private TableColumn<CourseDB, String> courseName;
 
     @FXML
-    private TableColumn<CourseDB, String> courseProf;
-
-    @FXML
-    private TableColumn<CourseDB, Integer> courseVahed;
-
-    @FXML
     private TableColumn<CourseDB, String> courseCode;
 
     @FXML
+    private TableColumn<CourseDB, String> courseProf;
+
+    @FXML
+    private TableColumn<CourseDB, Integer> courseUnit;
+
+    @FXML
     private TableColumn<CourseDB, String> courseSemester;
+
+    // Score
+    @FXML
+    private ComboBox<String> semesterSelect;
+
+    @FXML
+    private TableView<StudentDB> scoreTable;
+
+    @FXML
+    private TableColumn<StudentDB, String> nameColumn;
+
+    @FXML
+    private TableColumn<StudentDB, Integer> unitColumn;
+
+    @FXML
+    private TableColumn<StudentDB, Float> scoreColumn;
 
     // Schedule
     @FXML
@@ -84,106 +71,161 @@ public class StuDashboard {
     @FXML
     private TableColumn<CourseDB, String> timeColumn;
 
+    // Edit Info
     @FXML
-    private ComboBox<String> semesterSelect;
-
-    // Score
-    @FXML
-    private TableView<StudentDB> scoreTable;
+    private TextField firstnameInput;
 
     @FXML
-    private TableColumn<StudentDB, Integer> vahedColumn;
+    private TextField lastnameInput;
 
     @FXML
-    private TableColumn<StudentDB, String> nameColumn;
+    private TextField majorInput;
 
     @FXML
-    private TableColumn<StudentDB, Float> scoreColumn;
+    private TextField studentIdInput;
+
+    @FXML
+    private TextField usernameInput;
+
+    @FXML
+    private PasswordField passwordInput;
+
+    @FXML
+    private ComboBox<String> collegeInput;
+
+    @FXML
+    private ComboBox<Integer> enteringYearInput;
 
     // Label
     @FXML
     private Label showName;
 
     @FXML
-    private Label max;
+    private Label showMax;
 
     @FXML
-    private Label min;
+    private Label showMin;
 
     @FXML
-    private Label received;
+    private Label showReceived;
 
     @FXML
-    private Label semester;
+    private Label showSemester;
 
     @FXML
-    private Label totalAverage;
+    private Label showTotalAverage;
 
-    @FXML
-    void addClicked(ActionEvent event) throws NullPointerException, SQLException {
-        CourseDB course = courseList.getSelectionModel().getSelectedItem();
-        StudentDB student = new StudentDB();
-        student.setUsername(username);
-        ResultSet resultSet = student.findStuWithUsername();
-        while (resultSet.next()) {
-            student.setStudentId(resultSet.getInt("StudentId"));
-            student.setUsername(resultSet.getString("Username"));
-            student.setPassword(resultSet.getString("Password"));
-            student.setFirstName(resultSet.getString("Firstname"));
-            student.setLastName(resultSet.getString("Lastname"));
-            student.setMajorSubject(resultSet.getString("MajorSubject"));
-            student.setCollege(resultSet.getString("College"));
-            student.setEnteringYear(resultSet.getInt("EnteringYear"));
+    @FXML // This function receive course.
+    void addClicked() throws NullPointerException, SQLException {
+        CourseDB courseDB = courseList.getSelectionModel().getSelectedItem();
+        if (courseDB == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("PLEASE SELECT A COURSE !!");
+            alert.show();
+            return;
         }
 
-        student.setCourseCode(course.getCode());
-        student.setSemester(course.getSemester());
-        if (student.getStudentId() != 0) {
-            student.addStuWithCourse();
+        StudentDB studentDB = new StudentDB();
+        studentDB.setUsername(username);
+        ResultSet resultSet = studentDB.findWithUsername();
+        while (resultSet.next()) {
+            studentDB.setStudentId(resultSet.getInt("StudentId"));
+            studentDB.setUsername(resultSet.getString("Username"));
+            studentDB.setPassword(resultSet.getString("Password"));
+            studentDB.setFirstName(resultSet.getString("Firstname"));
+            studentDB.setLastName(resultSet.getString("Lastname"));
+            studentDB.setMajorSubject(resultSet.getString("MajorSubject"));
+            studentDB.setCollege(resultSet.getString("College"));
+            studentDB.setEnteringYear(resultSet.getInt("EnteringYear"));
+        }
+        studentDB.setCourseCode(courseDB.getCode());
+        studentDB.setSemester(courseDB.getSemester());
+        studentDB.addStuWithCourse();
+        initialize();
+    }
+
+    @FXML // This function delete course from list of selected courses.
+    void removeClicked() throws SQLException {
+        StudentDB studentDB = new StudentDB();
+        CourseDB courseDB = courseList.getSelectionModel().getSelectedItem();
+        if (courseDB == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("PLEASE SELECT A COURSE !!");
+            alert.show();
+            return;
+        }
+        studentDB.setUsername(username);
+        studentDB.setCourseCode(courseDB.getCode());
+        studentDB.removeCourse();
+        initialize();
+    }
+
+    @FXML // This function finish selecting course and after click this button you cannot receive or delete courses.
+    void finishClicked() throws SQLException {
+        StudentDB studentDB = new StudentDB();
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        studentDB.setUsername(username);
+        studentDB.setSemester(showSemester.getText());
+        if (studentDB.findStatusOfRegister().equals("END")) {
+            alert.setContentText("Registration is over !!");
+            alert.show();
+            return;
+        }
+
+        if (Integer.parseInt(showReceived.getText()) < Integer.parseInt(showMin.getText())) {
+            alert.setContentText("YOU MUST SELECT MORE THAN " + showMin.getText() + " UNIT");
+            alert.show();
+        } else if (Integer.parseInt(showReceived.getText()) > Integer.parseInt(showMax.getText())) {
+            alert.setContentText("YOU MUST SELECT LESS THAN " + showMax.getText() + " UNIT");
+            alert.show();
+        } else {
+            studentDB.setUsername(username);
+            studentDB.setStatus("END");
+            studentDB.changeStatus(showSemester.getText());
         }
         initialize();
     }
 
-    @FXML
-    void logoutClicked(ActionEvent event) throws IOException {
-        SceneController control = new SceneController();
-        control.switchScene(MainApplication.window, "Login.fxml");
-    }
-
-    @FXML
-    void quitClicked(ActionEvent event) {
-        SceneController control = new SceneController();
-        control.closeProgram(MainApplication.window);
-    }
-
-    @FXML
-    void editClicked(ActionEvent event) throws SQLException, IOException {
+    @FXML // This function show score table by semester.
+    void semesterClicked() throws SQLException {
         StudentDB studentDB = new StudentDB();
-        StudentAccount studentAccount = new StudentAccount();
-        boolean valid = studentAccount.checkValid(studentidInput.getText(),
-                usernameInput.getText(),
-                passwordInput.getText(),
-                firstnameInput.getText(),
-                lastnameInput.getText(),
-                majorInput.getText(),
-                collegeInput.getValue(),
-                enteringYearInput.getText());
+        CourseDB courseDB = new CourseDB();
+        score(studentDB, courseDB);
+    }
 
-        boolean flag = false;
+    @FXML // This function edit information of student.
+    void editClicked() throws SQLException, IOException {
+        StudentAccount studentAccount = new StudentAccount();
+
+        if (studentIdInput.getText().equals("")) {
+            studentAccount.setStudentId(0);
+        } else {
+            studentAccount.setStudentId(Integer.parseInt(studentIdInput.getText()));
+        }
+
+        if (enteringYearInput.getValue() == null) {
+            studentAccount.setEnteringYear(0);
+        } else {
+            studentAccount.setEnteringYear(enteringYearInput.getValue());
+        }
+
+        studentAccount.setUsername(usernameInput.getText());
+        studentAccount.setPassword(passwordInput.getText());
+        studentAccount.setFirstName(firstnameInput.getText());
+        studentAccount.setLastName(lastnameInput.getText());
+        studentAccount.setMajorSubject(majorInput.getText());
+        studentAccount.setCollege(collegeInput.getValue());
+        boolean valid = studentAccount.checkValid();
+
+        boolean flag;
         if (valid) {
-            studentDB.setStudentId(Integer.parseInt(studentidInput.getText()));
-            studentDB.setUsername(usernameInput.getText());
-            studentDB.setPassword(passwordInput.getText());
-            studentDB.setFirstName(firstnameInput.getText());
-            studentDB.setLastName(lastnameInput.getText());
-            studentDB.setMajorSubject(majorInput.getText());
-            studentDB.setCollege(collegeInput.getValue());
-            studentDB.setEnteringYear(Integer.parseInt(enteringYearInput.getText()));
-            flag = studentDB.editInfo(username);
+            flag = studentAccount.editInfo(username);
+        } else {
+            return;
         }
 
         if (flag) {
-            logoutClicked(event);
+            logoutClicked();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("THIS INFORMATION IS INVALID OR AlREADY EXIST !!");
@@ -192,74 +234,40 @@ public class StuDashboard {
     }
 
     @FXML
-    void removeClicked(ActionEvent event) throws SQLException {
-        StudentDB student = new StudentDB();
-        CourseDB course = courseList.getSelectionModel().getSelectedItem();
-        student.setUsername(username);
-        student.setCourseCode(course.getCode());
-        student.removeStu();
-        initialize();
+    void logoutClicked() throws IOException {
+        SceneController control = new SceneController();
+        control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
-    void semesterClicked(ActionEvent event) throws SQLException {
-        score();
-    }
-
-    @FXML
-    void finishClicked(ActionEvent event) throws SQLException {
-        StudentDB studentDB = new StudentDB();
-        if (Integer.parseInt(received.getText()) < Integer.parseInt(min.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("YOU MUST SELECT MORE THAN " + min.getText() + " VAHED");
-            alert.show();
-        } else if (Integer.parseInt(received.getText()) > Integer.parseInt(max.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("YOU MUST SELECT LESS THAN " + max.getText() + " VAHED");
-            alert.show();
-        } else {
-            studentDB.setUsername(username);
-            studentDB.setStatus("END");
-            studentDB.changeStatus(semester.getText());
-        }
-        initialize();
+    void quitClicked() {
+        SceneController control = new SceneController();
+        control.closeProgram(MainApplication.window);
     }
 
     public void initialize() throws SQLException {
         StudentDB studentDB = new StudentDB();
         SemesterDB semesterDB = new SemesterDB();
+        CollegeDB collegeDB = new CollegeDB();
+        CourseDB courseDB = new CourseDB();
+
         studentDB.setUsername(username);
         showName.setText(studentDB.findName());
-        semester.setText(semesterDB.currentSemester());
-        register();
-        schedule();
-        maxAndMin();
-
-        ObservableList<String> existSemester = FXCollections.observableArrayList();
-        ResultSet resultSet4 = semesterDB.semesterList();
-        if (resultSet4.isBeforeFirst()) {
-            while (resultSet4.next()) {
-                String name = resultSet4.getString("Name");
-                int number = resultSet4.getInt("Year");
-                existSemester.add(name + number);
-            }
-            semesterSelect.setItems(existSemester);
-        }
-
-        ObservableList<String> existCollege = FXCollections.observableArrayList();
-        CollegeDB collegeDB = new CollegeDB();
-        existCollege.addAll(collegeDB.collegeNames());
-        collegeInput.setItems(existCollege);
+        showSemester.setText(semesterDB.currentSemester());
+        setSemesterBox(semesterDB);
+        setCollegeBox(collegeDB);
+        setEnteringYearBox();
+        register(studentDB, courseDB, semesterDB);
+        schedule(studentDB, courseDB);
+        maxAndMin(studentDB);
     }
 
-    void register() throws SQLException {
+    // This function create table of register.
+    public void register(StudentDB studentDB, CourseDB courseDB, SemesterDB semesterDB) throws SQLException {
         ObservableList<CourseDB> registerList = FXCollections.observableArrayList();
-
-        StudentDB studentDB = new StudentDB();
         studentDB.setUsername(username);
-        CourseDB courseDB = new CourseDB();
-        ResultSet resultSet = courseDB.findCourse();
-        SemesterDB semesterDB = new SemesterDB();
+        courseDB.setSemester(showSemester.getText());
+        ResultSet resultSet = courseDB.findCourseWithSemester();
 
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
@@ -267,79 +275,90 @@ public class StuDashboard {
                 String code = resultSet.getString("Code");
                 String professor = resultSet.getString("ProfessorFirstName") + " " + resultSet.getString("ProfessorLastName");
                 String semester = resultSet.getString("Semester");
-                int vahed = resultSet.getInt("Vahed");
+                int unit = resultSet.getInt("Vahed");
                 courseDB.setCode(code);
                 studentDB.setCourseCode(code);
                 if (studentDB.findStatus().equals("END")) {
                     break;
                 }
 
-                if (semester.equals(semesterDB.currentSemester()) && courseDB.findYear() >= studentDB.findYear()) {
-                    registerList.add(new CourseDB(name, code, professor, vahed, semester));
+                if (semester.equals(semesterDB.currentSemester()) && courseDB.findCourseYear() >= studentDB.findEnteringYear()) {
+                    registerList.add(new CourseDB(name, code, professor, unit, semester));
                 }
             }
 
-            courseName.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("name"));
-            courseCode.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("code"));
-            courseProf.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("professor"));
-            courseVahed.setCellValueFactory(new PropertyValueFactory<CourseDB, Integer>("vahed"));
-            courseSemester.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("semester"));
+            courseName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            courseCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+            courseProf.setCellValueFactory(new PropertyValueFactory<>("professor"));
+            courseUnit.setCellValueFactory(new PropertyValueFactory<>("unit"));
+            courseSemester.setCellValueFactory(new PropertyValueFactory<>("semester"));
             courseList.setItems(registerList);
         }
     }
 
-    void score() throws SQLException {
-        StudentDB studentDB = new StudentDB();
-        CourseDB courseDB = new CourseDB();
+    // This function create table of score.
+    public void score(StudentDB studentDB, CourseDB courseDB) throws SQLException {
         ObservableList<StudentDB> scoreList = FXCollections.observableArrayList();
         studentDB.setUsername(username);
-        ResultSet resultSet = studentDB.findStuWithUsername();
-        float totalAve = 0;
+        studentDB.setSemester(semesterSelect.getValue());
+        ResultSet resultSet = studentDB.findCourseWithSemester();
+
         if (resultSet.isBeforeFirst()) {
             while (resultSet.next()) {
                 String code = resultSet.getString("CourseCode");
-
                 if (!code.equals("")) {
                     courseDB.setCode(code);
-                    ResultSet resultSet1 = courseDB.findCourseWithCode();
                     studentDB.setCourseCode(code);
-                    ResultSet resultSet3 = studentDB.findScoreWithCode();
+
+                    ResultSet resultSet1 = courseDB.findCourseWithCode();
+                    ResultSet resultSet2 = studentDB.findScoreWithCode();
                     float score = 0;
-                    while (resultSet3.next()) {
-                        score = resultSet3.getFloat("Score");
+                    while (resultSet2.next()) {
+                        score = resultSet2.getFloat("Score");
                     }
 
                     while (resultSet1.next()) {
                         String name = resultSet1.getString("Name");
                         String semester = resultSet1.getString("Semester");
-                        int vahed = resultSet1.getInt("Vahed");
+                        int unit = resultSet1.getInt("Vahed");
 
                         if (semesterSelect.getValue().equals(semester)) {
-                            scoreList.add(new StudentDB(name, vahed, score));
-                            totalAve += score * vahed;
+                            scoreList.add(new StudentDB(name, unit, score));
                         }
                     }
                 }
             }
 
-            nameColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, String>("name"));
-            vahedColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Integer>("vahed"));
-            scoreColumn.setCellValueFactory(new PropertyValueFactory<StudentDB, Float>("score"));
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            unitColumn.setCellValueFactory(new PropertyValueFactory<>("unit"));
+            scoreColumn.setCellValueFactory(new PropertyValueFactory<>("score"));
             scoreTable.setItems(scoreList);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("YOU HAVE NOT RECEIVED ANY LESSONS !!");
+            alert.show();
+            semesterSelect.setValue(semesterSelect.getItems().get(0));
+            return;
         }
-        totalAve /= Integer.parseInt(received.getText());
-        totalAverage.setText(String.format("%.2f", totalAve));
+
+        // set totalAverage
         studentDB.setSemester(semesterSelect.getValue());
-        studentDB.setTotalAverage(Float.parseFloat(totalAverage.getText()));
-        studentDB.addTotalAverage();
+        float totalAverage = studentDB.findTotalAve();
+        if (totalAverage != 0) {
+            showTotalAverage.setText(String.valueOf(totalAverage));
+        } else {
+            float total = calculateTotalAverage();
+            showTotalAverage.setText(String.format("%.2f", total));
+            studentDB.setTotalAverage(Float.parseFloat(showTotalAverage.getText()));
+            studentDB.addTotalAverage();
+        }
     }
 
-    void schedule() throws SQLException {
-        StudentDB studentDB = new StudentDB();
-        CourseDB courseDB = new CourseDB();
+    // This function create table of schedule.
+    public void schedule(StudentDB studentDB, CourseDB courseDB) throws SQLException {
         ObservableList<CourseDB> date = FXCollections.observableArrayList();
         studentDB.setUsername(username);
-        ResultSet resultSet1 = studentDB.findStuWithUsername();
+        ResultSet resultSet1 = studentDB.findWithUsername();
         if (resultSet1.isBeforeFirst()) {
             int vahed = 0;
             while (resultSet1.next()) {
@@ -349,10 +368,10 @@ public class StuDashboard {
                     ResultSet resultSet2 = courseDB.findCourseWithCode();
                     while (resultSet2.next()) {
                         String name = resultSet2.getString("Name");
-                        String term = resultSet2.getString("Semester");
+                        String semester = resultSet2.getString("Semester");
                         String time = resultSet2.getString("StartClass") + " - " + resultSet2.getString("EndClass");
                         String days = resultSet2.getString("Day");
-                        if (term.equals(semester.getText())) {
+                        if (semester.equals(showSemester.getText())) {
                             date.add(new CourseDB(name, days, time));
                             vahed += resultSet2.getInt("Vahed");
                         }
@@ -360,25 +379,29 @@ public class StuDashboard {
                 }
             }
 
-            received.setText(String.valueOf(vahed));
-            courseColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("name"));
-            daysColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("day"));
-            timeColumn.setCellValueFactory(new PropertyValueFactory<CourseDB, String>("time"));
+            showReceived.setText(String.valueOf(vahed));
+            courseColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            daysColumn.setCellValueFactory(new PropertyValueFactory<>("day"));
+            timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
             courseDate.setItems(date);
         }
     }
 
-    void maxAndMin() throws SQLException {
-        StudentDB studentDB = new StudentDB();
+    // This function set max and min unit that student can receive.
+    public void maxAndMin(StudentDB studentDB) throws SQLException {
         studentDB.setUsername(username);
-        boolean flag = semester.getText().contains("Summer");
+        if (showSemester.getText().equals("")) {
+            return;
+        }
+
+        boolean flag = showSemester.getText().contains("Summer");
         if (flag) {
-            max.setText(String.valueOf(6));
-            min.setText(String.valueOf(3));
+            showMax.setText(String.valueOf(6));
+            showMin.setText(String.valueOf(3));
         } else {
-            String term = semester.getText();
-            String name = term.substring(0, term.length() - 4);
-            int year = Integer.parseInt(term.substring(term.length() - 4, term.length()));
+            String semester = showSemester.getText();
+            String name = semester.substring(0, semester.length() - 4);
+            int year = Integer.parseInt(semester.substring(semester.length() - 4));
             if (name.equals("Fall")) {
                 studentDB.setSemester("Winter" + (year - 1));
             } else if (name.equals("Winter")) {
@@ -386,13 +409,47 @@ public class StuDashboard {
             }
 
             if (studentDB.findTotalAve() >= 17) {
-                max.setText(String.valueOf(24));
+                showMax.setText(String.valueOf(24));
             } else {
-                max.setText(String.valueOf(20));
+                showMax.setText(String.valueOf(20));
             }
 
-            min.setText(String.valueOf(12));
+            showMin.setText(String.valueOf(12));
         }
+    }
+
+    // This function calculate total average.
+    public float calculateTotalAverage() {
+        float total = 0;
+        ObservableList<StudentDB> studentScores = scoreTable.getItems();
+        for (StudentDB student : studentScores) {
+            total += student.getScore() * student.getUnit();
+        }
+        total /= Integer.parseInt(showReceived.getText());
+        return total;
+    }
+
+    public void setSemesterBox(SemesterDB semesterDB) throws SQLException {
+        ObservableList<String> existSemester = FXCollections.observableArrayList();
+        for (String names : semesterDB.semesterList()) {
+            String[] split = names.split(" ");
+            existSemester.add(split[0] + split[1]);
+        }
+        semesterSelect.setItems(existSemester);
+    }
+
+    public void setCollegeBox(CollegeDB collegeDB) throws SQLException {
+        ObservableList<String> existCollege = FXCollections.observableArrayList();
+        existCollege.addAll(collegeDB.collegeNames());
+        collegeInput.setItems(existCollege);
+    }
+
+    public void setEnteringYearBox() {
+        ObservableList<Integer> yearList = FXCollections.observableArrayList();
+        for (int i = 1385; i <= 1450; i++) {
+            yearList.add(i);
+        }
+        enteringYearInput.setItems(yearList);
     }
 }
 

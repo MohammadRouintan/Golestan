@@ -5,26 +5,20 @@ import com.example.golestan.Database.CollegeDB;
 import com.example.golestan.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class SignupStu {
 
     @FXML
-    private Button backButton;
-
-    @FXML
     private ComboBox<String> collegeInput;
 
     @FXML
-    private TextField enteringYearInput;
+    private ComboBox<Integer> enteringYearInput;
 
     @FXML
     private TextField firstnameInput;
@@ -33,16 +27,10 @@ public class SignupStu {
     private TextField lastnameInput;
 
     @FXML
-    private TextField majorSubjectInput;
+    private TextField majorInput;
 
     @FXML
     private PasswordField passwordInput;
-
-    @FXML
-    private Button quitButton;
-
-    @FXML
-    private Button signupButton;
 
     @FXML
     private TextField studentIdInput;
@@ -51,29 +39,39 @@ public class SignupStu {
     private TextField usernameInput;
 
     @FXML
-    void backClicked(ActionEvent event) throws IOException {
+    void backClicked() throws IOException {
         SceneController control = new SceneController();
         control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
-    void quitClicked(ActionEvent event) {
+    void quitClicked() {
         SceneController control = new SceneController();
         control.closeProgram(MainApplication.window);
     }
 
     @FXML
-    void signupClicked(ActionEvent event) throws SQLException, IOException {
+    void signupClicked() throws SQLException, IOException {
         SceneController control = new SceneController();
         StudentAccount studentAccount = new StudentAccount();
-        boolean valid = studentAccount.signup(studentIdInput.getText(),
-                usernameInput.getText(),
-                passwordInput.getText(),
-                firstnameInput.getText(),
-                lastnameInput.getText(),
-                majorSubjectInput.getText(),
-                collegeInput.getValue(),
-                enteringYearInput.getText());
+        studentAccount.setUsername(usernameInput.getText());
+        studentAccount.setPassword(passwordInput.getText());
+        studentAccount.setFirstName(firstnameInput.getText());
+        studentAccount.setLastName(lastnameInput.getText());
+        studentAccount.setMajorSubject(majorInput.getText());
+
+        try {
+            studentAccount.setStudentId(Integer.parseInt(studentIdInput.getText()));
+        } catch (NumberFormatException ex) {
+            ex.printStackTrace();
+        }
+
+        if (collegeInput.getValue() != null && enteringYearInput.getValue() != null) {
+            studentAccount.setCollege(collegeInput.getValue());
+            studentAccount.setEnteringYear(Integer.parseInt(String.valueOf(enteringYearInput.getValue())));
+        }
+
+        boolean valid = studentAccount.signup();
         if (valid) {
             StuDashboard.setUsername(usernameInput.getText());
             control.switchScene(MainApplication.window, "StudentDashboard.fxml");
@@ -81,10 +79,22 @@ public class SignupStu {
     }
 
     public void initialize() throws SQLException {
+        setCollegeBox();
+        setEnteringYearBox();
+    }
+
+    public void setCollegeBox() throws SQLException {
         ObservableList<String> collegeList = FXCollections.observableArrayList();
         CollegeDB college = new CollegeDB();
         collegeList.addAll(college.collegeNames());
         collegeInput.setItems(collegeList);
     }
 
+    public void setEnteringYearBox() {
+        ObservableList<Integer> yearList = FXCollections.observableArrayList();
+        for (int i = 1385; i <= 1450; i++) {
+            yearList.add(i);
+        }
+        enteringYearInput.setItems(yearList);
+    }
 }

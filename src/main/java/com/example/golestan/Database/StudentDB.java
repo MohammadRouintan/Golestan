@@ -3,7 +3,7 @@ package com.example.golestan.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StudentDB extends Database {
+public class StudentDB extends Database implements Users {
     private String username;
     private String password;
     private String firstName;
@@ -18,7 +18,7 @@ public class StudentDB extends Database {
     private float totalAverage;
     private int studentId;
     private int enteringYear;
-    private int vahed;
+    private int unit;
 
     public StudentDB() {
         this.studentId = 0;
@@ -35,9 +35,9 @@ public class StudentDB extends Database {
         this.semester = "";
     }
 
-    public StudentDB(String name, int vahed, float score) {
+    public StudentDB(String name, int unit, float score) {
         this.name = name;
-        this.vahed = vahed;
+        this.unit = unit;
         this.score = score;
     }
 
@@ -47,51 +47,19 @@ public class StudentDB extends Database {
         this.score = score;
     }
 
-    public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear) {
-        this.studentId = studentId;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.majorSubject = majorSubject;
-        this.college = college;
-        this.enteringYear = enteringYear;
-        this.courseCode = "";
-        this.score = 0;
-        this.totalAverage = 0;
-    }
-
-    public StudentDB(int studentId, String username, String password, String firstName, String lastName, String majorSubject, String college, int enteringYear, String courseCode, float score, float totalAverage) {
-        this.studentId = studentId;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.majorSubject = majorSubject;
-        this.college = college;
-        this.enteringYear = enteringYear;
-        this.courseCode = courseCode;
-        this.score = score;
-        this.totalAverage = totalAverage;
-    }
-
-    public boolean addStu() throws SQLException {
-        if (checkStuWithUsername(username) || checkStuWithStudentId()) {
-            return false;
-        } else {
-            super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
-                    "CourseCode, Score, TotalAverage) VALUES " + "(" + studentId + ", '" + username + "', '" + password +
-                    "', '" + firstName + "', '" + lastName + "', '" + majorSubject + "', '" + college + "', " + enteringYear +
-                    ", '" + courseCode + "', " + score + ", " + totalAverage + ")");
-            super.write();
-        }
-
+    @Override // This function add student to table of Students in database
+    public void addToDatabase() throws SQLException {
+        super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
+                "CourseCode, Score, TotalAverage) VALUES " + "(" + studentId + ", '" + username + "', '" + password +
+                "', '" + firstName + "', '" + lastName + "', '" + majorSubject + "', '" + college + "', " + enteringYear +
+                ", '" + courseCode + "', " + score + ", " + totalAverage + ")");
+        super.write();
         super.disconnect();
-        return true;
     }
 
+    // When student receive a course this function add information of student with information of selected course.
     public void addStuWithCourse() throws SQLException {
-        if (!checkCourse()) {
+        if (!checkExistCourse()) {
             super.setQuery("INSERT INTO Students (StudentId, Username, Password, Firstname, Lastname, MajorSubject, College, EnteringYear, " +
                     "CourseCode, Semester, Score, TotalAverage) VALUES " + "(" + studentId + ", '" + username + "', '" + password + "', '" +
                     firstName + "', '" + lastName + "', '" + majorSubject + "', '" + college + "', " + enteringYear + ", '" +
@@ -101,9 +69,10 @@ public class StudentDB extends Database {
         }
     }
 
-    public boolean checkStuWithUsername(String username) throws SQLException {
+    @Override // This function check that username exists or not.
+    public boolean checkExistUsername(String username) throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -112,9 +81,10 @@ public class StudentDB extends Database {
         return false;
     }
 
+    // This function check that student with this student id exists or not.
     public boolean checkStuWithStudentId() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE StudentId = " + studentId);
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -123,61 +93,65 @@ public class StudentDB extends Database {
         return false;
     }
 
-    public boolean editInfo(String oldUsername) throws SQLException {
-        boolean flag = false;
-        if (oldUsername.equals(username) || !checkStuWithUsername(username)) {
-            flag = true;
-        }
-
-        if (checkStuWithUsername(oldUsername) && !checkStuWithStudentId() && flag) {
-            super.setQuery("UPDATE Students SET StudentId = " + studentId + ", Username = '" + username + "', Password = '" + password +
-                    "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
-                    "', College = '" + college + "', EnteringYear = " + enteringYear + " WHERE Username = '" + oldUsername + "'");
-            super.write();
-            return true;
-        }
-
+    @Override // This function update information when student edit his information.
+    public void updateDatabase(String oldUsername) throws SQLException {
+        super.setQuery("UPDATE Students SET StudentId = " + studentId + ", Username = '" + username + "', Password = '" + password +
+                "', Firstname = '" + firstName + "', Lastname = '" + lastName + "', MajorSubject = '" + majorSubject +
+                "', College = '" + college + "', EnteringYear = " + enteringYear + " WHERE Username = '" + oldUsername + "'");
+        super.write();
         super.disconnect();
-        return false;
     }
 
-    public void removeStu() throws SQLException {
-        if (checkStuWithUsername(username)) {
+    // This function remove course when student click remove button in register pane.
+    public void removeCourse() throws SQLException {
+        if (checkExistUsername(username)) {
             super.setQuery("DELETE FROM Students WHERE Username = '" + username + "' AND CourseCode = '" + courseCode + "'");
             super.write();
             super.disconnect();
         }
     }
 
-    public void addScore() throws SQLException {
+    // This function edit score when professor gives grade.
+    public void editScore() throws SQLException {
         super.setQuery("UPDATE Students SET Score = " + score + " WHERE StudentId = " + studentId + " AND CourseCode = '" + courseCode + "'");
         super.write();
         super.disconnect();
     }
 
-    public void addTotalAverage() throws SQLException{
+    // This function add total average of special semester to database
+    public void addTotalAverage() throws SQLException {
         super.setQuery("UPDATE Students SET TotalAverage = " + totalAverage + "WHERE Username = '" + username + "' AND Semester = '" + semester + "'");
         super.write();
         super.disconnect();
     }
 
+    // This function find a course with special code
     public ResultSet findCourseWithCode() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE CourseCode = '" + courseCode + "'");
         return super.read();
     }
 
-    public ResultSet findStuWithUsername() throws SQLException {
+    @Override
+    public ResultSet findWithUsername() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE Username = '" + username + "'");
         return super.read();
     }
 
+    // This function find a course with special semester
+    public ResultSet findCourseWithSemester() throws SQLException {
+        super.setQuery("SELECT CourseCode FROM Students WHERE Username = '" + username + "' AND Semester = '" + semester + "'");
+        return super.read();
+    }
+
+    // This function find score of student with course code.
     public ResultSet findScoreWithCode() throws SQLException {
         super.setQuery("SELECT Score FROM Students WHERE CourseCode = '" + courseCode + "' AND Username = '" + username + "'");
         return super.read();
     }
 
+    @Override
     public String findName() throws SQLException {
-        ResultSet resultSet = findStuWithUsername();
+        ResultSet resultSet = findWithUsername();
         String firstName = "", lastName = "";
         while (resultSet.next()) {
             firstName = resultSet.getString("Firstname");
@@ -186,8 +160,8 @@ public class StudentDB extends Database {
         return firstName + " " + lastName;
     }
 
-    public int findYear() throws SQLException {
-        ResultSet resultSet = findStuWithUsername();
+    public int findEnteringYear() throws SQLException {
+        ResultSet resultSet = findWithUsername();
         int year = 0;
         while (resultSet.next()) {
             year = resultSet.getInt("EnteringYear");
@@ -208,12 +182,14 @@ public class StudentDB extends Database {
         return total;
     }
 
+    // This function change status of register.
     public void changeStatus(String semester) throws SQLException {
         super.setQuery("UPDATE Students SET Status = '" + status + "' WHERE Username = '" + username + "' AND Semester = '" + semester + "'");
         super.write();
         super.disconnect();
     }
 
+    // This function find status of register.
     public String findStatus() throws SQLException {
         super.setQuery("SELECT Status FROM Students WHERE CourseCode = '" + courseCode + "' AND Username = '" + username + "'");
         ResultSet resultSet = super.read();
@@ -224,7 +200,21 @@ public class StudentDB extends Database {
         return status;
     }
 
-    public boolean checkCourse() throws SQLException {
+    public String findStatusOfRegister() throws SQLException {
+        super.setQuery("SELECT Status FROM Students WHERE Username = '" + username + "' AND Semester = '" + semester + "'");
+        ResultSet resultSet = super.read();
+        String status = "";
+        while (resultSet.next()) {
+            status = resultSet.getString("Status");
+            if (!status.equals("")) {
+                break;
+            }
+        }
+        return status;
+    }
+
+    // This function check that course with this username and course code exists or not.
+    public boolean checkExistCourse() throws SQLException {
         super.setQuery("SELECT * FROM Students WHERE CourseCode = '" + courseCode + "' AND Username = '" + username + "'");
         if (super.isExist()) {
             super.disconnect();
@@ -279,6 +269,10 @@ public class StudentDB extends Database {
         this.majorSubject = majorSubject;
     }
 
+    public String getMajorSubject() {
+        return majorSubject;
+    }
+
     public String getCollege() {
         return college;
     }
@@ -295,10 +289,6 @@ public class StudentDB extends Database {
         this.enteringYear = enteringYear;
     }
 
-    public String getCourseCode() {
-        return courseCode;
-    }
-
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
     }
@@ -309,10 +299,6 @@ public class StudentDB extends Database {
 
     public void setScore(float score) {
         this.score = score;
-    }
-
-    public float getTotalAverage() {
-        return totalAverage;
     }
 
     public void setTotalAverage(float totalAverage) {
@@ -327,24 +313,12 @@ public class StudentDB extends Database {
         this.name = name;
     }
 
-    public int getVahed() {
-        return vahed;
-    }
-
-    public void setVahed(int vahed) {
-        this.vahed = vahed;
-    }
-
-    public String getSemester() {
-        return semester;
+    public int getUnit() {
+        return unit;
     }
 
     public void setSemester(String semester) {
         this.semester = semester;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public void setStatus(String status) {

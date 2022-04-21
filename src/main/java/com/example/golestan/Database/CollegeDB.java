@@ -14,27 +14,23 @@ public class CollegeDB extends Database {
     public CollegeDB() {
         this.name = "";
     }
-
     public CollegeDB(String name) {
         this.name = name;
     }
 
-    public void addCollege() throws SQLException {
-        if (!checkValid()) {
-            return;
-        }
-
+    @Override // This function add college to table of Colleges in database.
+    public void addToDatabase() throws SQLException {
         if (!checkCollegeWithName()) {
             super.setQuery("INSERT INTO Colleges (Name) VALUES ('" + name + "')");
             super.write();
+            super.disconnect();
         }
-
-        super.disconnect();
     }
 
+    // This function check that college with this name exists or not.
     public boolean checkCollegeWithName() throws SQLException {
         super.setQuery("SELECT * FROM Colleges WHERE Name = '" + name + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -43,6 +39,7 @@ public class CollegeDB extends Database {
         return false;
     }
 
+    // This function return list of college.
     public ArrayList<String> collegeNames() throws SQLException {
         super.setQuery("SELECT Name FROM Colleges");
         ResultSet resultSet = super.read();
@@ -56,7 +53,7 @@ public class CollegeDB extends Database {
     }
 
     public boolean checkValid() {
-        Pattern pattern = Pattern.compile("^[A-za-z]+$");
+        Pattern pattern = Pattern.compile("^[A-Za-z]+$");
         Matcher matcher = pattern.matcher(name);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -14,13 +14,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.ProfDashboard">
     <bottom>
         <TabPane prefHeight="497.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
             <tabs>
-                <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Courses">
+                <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-background-color: #1e90ff#1e90ff; -fx-border-radius: 10;" text="Courses">
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
@@ -34,29 +35,26 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                        <TableView fx:id="courseList" layoutY="3.0" prefHeight="458.0" prefWidth="244.0" AnchorPane.topAnchor="3.0">
+                        <TableView fx:id="courseList" layoutY="3.0" prefHeight="458.0" prefWidth="244.0" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 5;" AnchorPane.topAnchor="3.0">
                           <columns>
-                            <TableColumn fx:id="nameColumn" prefWidth="125.0" style="-fx-font-size: 18;" text="Name" />
-                              <TableColumn fx:id="codeColumn" prefWidth="118.0" style="-fx-font-size: 18;" text="Code" />
+                            <TableColumn fx:id="nameColumn" prefWidth="125.0" style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: #bc0404#bc0404 #bc0404#bc0404;" text="Name" />
+                              <TableColumn fx:id="codeColumn" prefWidth="118.0" style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: #bc0404#bc0404 #bc0404#bc0404;" text="Code" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <TableView fx:id="stuList" editable="true" layoutX="244.0" layoutY="2.0" prefHeight="418.0" prefWidth="556.0" AnchorPane.topAnchor="3.0">
+                        <TableView fx:id="studentList" editable="true" layoutX="244.0" layoutY="-1.0" prefHeight="421.0" prefWidth="556.0" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 5;" AnchorPane.topAnchor="3.0">
                           <columns>
-                            <TableColumn fx:id="idColumn" editable="false" prefWidth="143.0" style="-fx-font-size: 18;" text="Student Id" />
-                            <TableColumn fx:id="nameStuColumn" editable="false" prefWidth="277.0" style="-fx-font-size: 18;" text="Name" />
-                              <TableColumn fx:id="scoreColumn" onEditCommit="#editScore" prefWidth="135.0" style="-fx-font-size: 18;" text="Score" />
+                            <TableColumn fx:id="idColumn" editable="false" prefWidth="139.0" style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: #bc0404#bc0404 #bc0404#bc0404 #bc0404#bc0404 #bc0404#bc0404; -fx-alignment: center;" text="Student Id" />
+                            <TableColumn fx:id="nameStuColumn" editable="false" prefWidth="303.0" style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: #bc0404#bc0404 #bc0404#bc0404 #bc0404#bc0404 #bc0404#bc0404;" text="Name" />
+                              <TableColumn fx:id="scoreColumn" onEditCommit="#editScore" prefWidth="113.0" style="-fx-font-size: 18; -fx-background-color: transparent; -fx-text-fill: #000000; -fx-alignment: center;" text="Score" />
                           </columns>
-                           <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                           </columnResizePolicy>
                         </TableView>
                             </children>
                         </AnchorPane>
                     </content></Tab>
-                <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-border-radius: 10;" text="Edit Info">
+                <Tab style="-fx-font-size: 20; -fx-background-radius: 10; -fx-background-color: #1e90ff#1e90ff; -fx-border-radius: 10;" text="Edit Info">
                     <content>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                             <children>
@@ -70,13 +68,16 @@
                                         <Font size="20.0" />
                                     </font>
                                 </Button>
-                                <Ellipse fill="DODGERBLUE" layoutX="400.0" layoutY="56.0" radiusX="139.0" radiusY="42.0" stroke="BLACK" strokeType="INSIDE" />
+                                <Ellipse fill="DODGERBLUE" layoutX="400.0" layoutY="56.0" radiusX="139.0" radiusY="42.0" stroke="DODGERBLUE" strokeType="INSIDE" />
                                 <Label layoutX="349.0" layoutY="37.0" text="Edit Info" textFill="WHITE">
                                     <font>
                                         <Font size="30.0" />
                                     </font>
                                 </Label>
-                        <TextField fx:id="firstnameInput" layoutX="167.0" layoutY="119.0" prefHeight="40.0" prefWidth="200.0" promptText="Firstname" />
+                        <TextField fx:id="firstnameInput" layoutX="167.0" layoutY="119.0" prefHeight="40.0" prefWidth="210.0" promptText="Firstname" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+                           <font>
+                              <Font size="17.0" />
+                           </font></TextField>
                         <Label layoutX="20.0" layoutY="126.0" text="New Firstname :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
@@ -87,8 +88,14 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="lastnameInput" layoutX="167.0" layoutY="173.0" prefHeight="40.0" prefWidth="200.0" promptText="Lastname" />
-                        <TextField fx:id="usernameInput" layoutX="537.0" layoutY="119.0" prefHeight="40.0" prefWidth="200.0" promptText="Username" />
+                        <TextField fx:id="lastnameInput" layoutX="167.0" layoutY="173.0" prefHeight="40.0" prefWidth="210.0" promptText="Lastname" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+                           <font>
+                              <Font size="17.0" />
+                           </font></TextField>
+                        <TextField fx:id="usernameInput" layoutX="537.0" layoutY="119.0" prefHeight="40.0" prefWidth="210.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+                           <font>
+                              <Font size="17.0" />
+                           </font></TextField>
                         <Label layoutX="386.0" layoutY="126.0" text="New Username :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
@@ -99,15 +106,21 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <PasswordField fx:id="passwordInput" layoutX="537.0" layoutY="173.0" prefHeight="40.0" prefWidth="200.0" promptText="Password" />
-                        <Label layoutX="51.0" layoutY="229.0" text="New Group :" textFill="#0c31a1">
+                        <PasswordField fx:id="passwordInput" layoutX="537.0" layoutY="173.0" prefHeight="40.0" prefWidth="210.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+                           <font>
+                              <Font size="17.0" />
+                           </font></PasswordField>
+                        <Label layoutX="421.0" layoutY="226.0" text="New Group :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="gruopInput" layoutX="167.0" layoutY="226.0" prefHeight="40.0" prefWidth="200.0" promptText="Group" />
-                        <ComboBox fx:id="collegeInput" layoutX="537.0" layoutY="226.0" prefHeight="40.0" prefWidth="200.0" promptText="College" />
-                        <Label layoutX="406.0" layoutY="232.0" text="New College :" textFill="#0c31a1">
+                        <TextField fx:id="groupInput" layoutX="537.0" layoutY="223.0" prefHeight="40.0" prefWidth="210.0" promptText="Group" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+                           <font>
+                              <Font size="17.0" />
+                           </font></TextField>
+                        <ComboBox fx:id="collegeInput" layoutX="167.0" layoutY="223.0" prefHeight="40.0" prefWidth="210.0" promptText="College" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;" />
+                        <Label layoutX="36.0" layoutY="229.0" text="New College :" textFill="#0c31a1">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -127,31 +140,30 @@
     <top>
         <AnchorPane prefHeight="105.0" prefWidth="800.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="39.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="85.0" fitWidth="78.0" layoutX="39.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../../img/book-512.png" />
                     </image>
                 </ImageView>
-                <Label layoutX="177.0" layoutY="23.0" text="Professor" textFill="WHITE">
+                <Label layoutX="188.0" layoutY="23.0" text="Professor" textFill="WHITE">
                     <font>
                         <Font size="48.0" />
                     </font>
                 </Label>
-                <Label fx:id="showName" layoutX="550.0" layoutY="36.0" text="Label" textFill="WHITE">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="69.0" layoutX="509.0" layoutY="18.0" stroke="WHITE" strokeType="INSIDE" width="291.0" />
+                <Label fx:id="showName" layoutX="520.0" layoutY="23.0" text="Label">
                <font>
                   <Font size="21.0" />
-               </font></Label>
-            <Label layoutX="426.0" layoutY="62.0" text="Current Semester  :" textFill="WHITE">
+               </font>
+            </Label>
+            <Label layoutX="520.0" layoutY="53.0" text="Current Semester  :">
                <font>
-                  <Font size="21.0" />
-               </font></Label>
-            <Label fx:id="semester" layoutX="608.0" layoutY="64.0" text="Label" textFill="WHITE">
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label fx:id="showSemester" layoutX="681.0" layoutY="54.0" text="Label">
                <font>
-                  <Font size="21.0" />
-               </font></Label>
-            <Label layoutX="426.0" layoutY="35.0" text="WELCOME !" textFill="WHITE">
-               <font>
-                  <Font size="21.0" />
+                  <Font size="19.0" />
                </font>
             </Label>
             </children>

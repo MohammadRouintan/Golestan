@@ -11,7 +11,7 @@ public class CourseDB extends Database {
     private String professor;
     private String name;
     private String code;
-    private int vahed;
+    private int unit;
     private String profFirstName;
     private String profLastName;
     private String college;
@@ -24,7 +24,7 @@ public class CourseDB extends Database {
     public CourseDB() {
         this.name = "";
         this.code = "";
-        this.vahed = 0;
+        this.unit = 0;
         this.profFirstName = "";
         this.profLastName = "";
         this.college = "";
@@ -45,45 +45,27 @@ public class CourseDB extends Database {
         this.time = time;
     }
 
-    public CourseDB(String name, String code, int vahed, String profFirstName, String profLastName, String college, String semester, int startClass, int endClass, String day) {
-        this.name = name;
-        this.code = code;
-        this.vahed = vahed;
-        this.profFirstName = profFirstName;
-        this.profLastName = profLastName;
-        this.college = college;
-        this.semester = semester;
-        this.startClass = startClass;
-        this.endClass = endClass;
-        this.day = day;
-    }
-
-    public CourseDB(String name, String code, String professor, int vahed, String semester) {
+    public CourseDB(String name, String code, String professor, int unit, String semester) {
         this.name = name;
         this.code = code;
         this.professor = professor;
-        this.vahed = vahed;
+        this.unit = unit;
         this.semester = semester;
     }
 
-    public boolean addCourse() throws SQLException {
-        if (checkCourse()) {
-            return false;
-        } else {
-            super.setQuery("INSERT INTO Courses (Name, Code, Vahed, ProfessorFirstName, ProfessorLastName, College, " +
-                    "Semester, StartClass, EndClass, Day) VALUES ('" + name + "', '" + code + "', " + vahed +
-                    ", '" + profFirstName + "', '" + profLastName + "', '" + college + "', '" + semester + "', " + startClass +
-                    ", " + endClass + ", '" + day + "')");
-            super.write();
-        }
-
+    @Override // This function add course to table of Courses in database.
+    public void addToDatabase() throws SQLException {
+        super.setQuery("INSERT INTO Courses (Name, Code, Vahed, ProfessorFirstName, ProfessorLastName, College, " +
+                "Semester, StartClass, EndClass, Day) VALUES ('" + name + "', '" + code + "', " + unit +
+                ", '" + profFirstName + "', '" + profLastName + "', '" + college + "', '" + semester + "', " + startClass +
+                ", " + endClass + ", '" + day + "')");
+        super.write();
         super.disconnect();
-        return true;
     }
 
+    // This function check that course with this code exists or not.
     public boolean checkCourse() throws SQLException {
-        super.setQuery("SELECT * FROM Courses WHERE Code = '" + code + "'");
-        if (super.isExist()) {
+        if (findCourseWithCode().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -92,23 +74,26 @@ public class CourseDB extends Database {
         return false;
     }
 
-    public ResultSet findCourse() throws SQLException {
-        super.setQuery("SELECT * FROM Courses");
+    // This function find Courses of special semester.
+    public ResultSet findCourseWithSemester() throws SQLException {
+        super.setQuery("SELECT * FROM Courses WHERE Semester = '" + semester + "'");
         return super.read();
     }
 
+    // This function find course with special code.
     public ResultSet findCourseWithCode() throws SQLException {
         super.setQuery("SELECT * FROM Courses WHERE Code = '" + code + "'");
         return super.read();
     }
 
+    // This function find courses with special professor.
     public ResultSet findCourseWithProf(String firstName, String lastName) throws SQLException {
-        super.setQuery("SELECT Name, Code FROM Courses WHERE ProfessorFirstName = '" + firstName + "' AND " +
+        super.setQuery("SELECT * FROM Courses WHERE ProfessorFirstName = '" + firstName + "' AND " +
                 "ProfessorLastName = '" + lastName + "'");
         return super.read();
     }
 
-    public int findYear() throws SQLException {
+    public int findCourseYear() throws SQLException {
         ResultSet resultSet = findCourseWithCode();
         int year = 0;
         while (resultSet.next()) {
@@ -118,11 +103,11 @@ public class CourseDB extends Database {
         return year;
     }
 
-    public boolean checkValid(String name, String code, String vahed, String college, String semester, int startClass, int endClass) {
+    public boolean checkValid(String name, String code, String unit, int startClass, int endClass, String day) {
         Pattern pattern;
         Matcher matcher;
 
-        pattern = Pattern.compile("^[A-za-z]+[1-9]*$");
+        pattern = Pattern.compile("^[A-Za-z]+[1-9]*$");
         matcher = pattern.matcher(name);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -141,24 +126,10 @@ public class CourseDB extends Database {
         }
 
         pattern = Pattern.compile("^[1-9]{1}$");
-        matcher = pattern.matcher(vahed);
+        matcher = pattern.matcher(unit);
         if (!matcher.find()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("THIS VAHED IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
-        if (college.equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS COLLEGE IS INVALID !!");
-            alert.show();
-            return false;
-        }
-
-        if (semester.equals("")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("THIS SEMESTER IS INVALID !!");
             alert.show();
             return false;
         }
@@ -170,9 +141,15 @@ public class CourseDB extends Database {
             return false;
         }
 
+        if (day.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("PLEASE SELECT DAYS OF CLASS !!");
+            alert.show();
+            return false;
+        }
+
         return true;
     }
-
 
     public String getName() {
         return name;
@@ -190,24 +167,16 @@ public class CourseDB extends Database {
         this.code = code;
     }
 
-    public int getVahed() {
-        return vahed;
+    public void setUnit(int unit) {
+        this.unit = unit;
     }
 
-    public void setVahed(int vahed) {
-        this.vahed = vahed;
-    }
-
-    public String getProfFirstName() {
-        return profFirstName;
+    public int getUnit() {
+        return unit;
     }
 
     public void setProfFirstName(String profFirstName) {
         this.profFirstName = profFirstName;
-    }
-
-    public String getProfLastName() {
-        return profLastName;
     }
 
     public void setProfLastName(String profLastName) {
@@ -230,28 +199,20 @@ public class CourseDB extends Database {
         this.semester = semester;
     }
 
-    public int getStartClass() {
-        return startClass;
-    }
-
     public void setStartClass(int startClass) {
         this.startClass = startClass;
-    }
-
-    public int getEndClass() {
-        return endClass;
     }
 
     public void setEndClass(int endClass) {
         this.endClass = endClass;
     }
 
-    public String getDay() {
-        return day;
-    }
-
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getDay() {
+        return day;
     }
 
     public String getProfessor() {
@@ -264,9 +225,5 @@ public class CourseDB extends Database {
 
     public String getTime() {
         return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 }

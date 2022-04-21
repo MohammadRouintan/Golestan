@@ -5,20 +5,14 @@ import com.example.golestan.Database.CollegeDB;
 import com.example.golestan.MainApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
 public class SignupProf {
-
-    @FXML
-    private Button backButton;
 
     @FXML
     private ComboBox<String> collegeInput;
@@ -27,7 +21,7 @@ public class SignupProf {
     private TextField firstnameInput;
 
     @FXML
-    private TextField gruopInput;
+    private TextField groupInput;
 
     @FXML
     private TextField lastnameInput;
@@ -36,42 +30,46 @@ public class SignupProf {
     private PasswordField passwordInput;
 
     @FXML
-    private Button quitButton;
-
-    @FXML
-    private Button signupButton;
-
-    @FXML
     private TextField usernameInput;
 
     @FXML
-    void backClicked(ActionEvent event) throws IOException {
+    void backClicked() throws IOException {
         SceneController control = new SceneController();
         control.switchScene(MainApplication.window, "Login.fxml");
     }
 
     @FXML
-    void quitClicked(ActionEvent event) {
+    void quitClicked() {
         SceneController control = new SceneController();
         control.closeProgram(MainApplication.window);
     }
 
     @FXML
-    void signupClicked(ActionEvent event) throws SQLException, IOException {
+    void signupClicked() throws SQLException, IOException {
         SceneController control = new SceneController();
         ProfessorAccount professorAccount = new ProfessorAccount();
-        boolean valid = professorAccount.signup(usernameInput.getText(),
-                passwordInput.getText(),
-                firstnameInput.getText(),
-                lastnameInput.getText(),
-                gruopInput.getText(),
-                collegeInput.getValue());
-        if (valid) {
-            control.switchScene(MainApplication.window, "ProfessorDashboard.fxml");
+        professorAccount.setUsername(usernameInput.getText());
+        professorAccount.setPassword(passwordInput.getText());
+        professorAccount.setFirstName(firstnameInput.getText());
+        professorAccount.setLastName(lastnameInput.getText());
+        professorAccount.setGroup(groupInput.getText());
+        if (collegeInput.getValue() != null) {
+            professorAccount.setCollege(collegeInput.getValue());
+        }
+        if (professorAccount.checkValid()) {
+            boolean valid = professorAccount.signup();
+            if (valid) {
+                ProfDashboard.setUsername(usernameInput.getText());
+                control.switchScene(MainApplication.window, "ProfessorDashboard.fxml");
+            }
         }
     }
 
     public void initialize() throws SQLException {
+        setCollegeBox();
+    }
+
+    public void setCollegeBox() throws SQLException {
         ObservableList<String> existCollege = FXCollections.observableArrayList();
         CollegeDB collegeDB = new CollegeDB();
         existCollege.addAll(collegeDB.collegeNames());

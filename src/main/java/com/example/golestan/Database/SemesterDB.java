@@ -2,6 +2,7 @@ package com.example.golestan.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SemesterDB extends Database {
     private String name;
@@ -17,20 +18,17 @@ public class SemesterDB extends Database {
         this.year = year;
     }
 
-    public boolean addSemester() throws SQLException {
-        if (checkSemester()) {
-            return false;
-        } else {
-            super.setQuery("INSERT INTO Semesters (Name, Year) VALUES ('" + name + "', '" + year + "')");
-            super.write();
-        }
+    @Override // This function add semester to table of Semesters in database.
+    public void addToDatabase() throws SQLException {
+        super.setQuery("INSERT INTO Semesters (Name, Year, Current) VALUES ('" + name + "', '" + year + "', '')");
+        super.write();
         super.disconnect();
-        return true;
     }
 
+    // This function check that semester with this name and year exists or not.
     public boolean checkSemester() throws SQLException {
         super.setQuery("SELECT * FROM Semesters WHERE Name = '" + name + "' AND Year = '" + year + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -39,6 +37,7 @@ public class SemesterDB extends Database {
         return false;
     }
 
+    // This function return current semester.
     public String currentSemester() throws SQLException {
         super.setQuery("SELECT * FROM Semesters");
         ResultSet resultSet = super.read();
@@ -53,6 +52,7 @@ public class SemesterDB extends Database {
         return "";
     }
 
+    // This function set current semester.
     public void setCurrent() throws SQLException {
         deleteCurrent();
         super.setQuery("UPDATE Semesters SET Current = 'yes' WHERE Name = '" + name + "' AND  Year = " + year);
@@ -60,6 +60,7 @@ public class SemesterDB extends Database {
         super.disconnect();
     }
 
+    // This function delete old current semester.
     private void deleteCurrent() throws SQLException {
         super.setQuery("SELECT * FROM Semesters");
         ResultSet resultSet = super.read();
@@ -76,11 +77,18 @@ public class SemesterDB extends Database {
         }
     }
 
-    public ResultSet semesterList() throws SQLException {
+    // This function return list of semester.
+    public ArrayList<String> semesterList() throws SQLException {
         super.setQuery("SELECT * FROM Semesters");
         ResultSet resultSet = super.read();
+        ArrayList<String> list = new ArrayList<>();
 
-        return resultSet;
+        while (resultSet.next()) {
+            String name = resultSet.getString("Name");
+            int year = resultSet.getInt("Year");
+            list.add(name + " " + year);
+        }
+        return list;
     }
 
     public String getName() {

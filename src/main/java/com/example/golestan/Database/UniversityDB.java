@@ -1,11 +1,9 @@
 package com.example.golestan.Database;
 
-import javafx.scene.control.Alert;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UniversityDB extends Database{
+public class UniversityDB extends Database implements Users{
     private String name;
     private String username;
     private String password;
@@ -16,60 +14,26 @@ public class UniversityDB extends Database{
         this.password = "";
     }
 
-    public UniversityDB(String name, String username, String password) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-    }
-
-    public boolean addUni() throws SQLException {
-        if (numberOfUni() >= 1) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("YOU CANNOT CREATE NEW ACCOUNT.\nBECAUSE AN UNIVERSITY ALREADY EXIST.");
-            alert.show();
-            return false;
-        }
-
-        if (checkUniWithName() || checkUniWithUsername()) {
-            return false;
-        } else {
-            super.setQuery("INSERT INTO Universities (Name, Username, Password) VALUES " +
-                    "('" + name + "', '" + username + "', '" + password + "')");
-            super.write();
-        }
-
+    @Override // This function add university to table of Universities in database.
+    public void addToDatabase() throws SQLException {
+        super.setQuery("INSERT INTO Universities (Name, Username, Password) VALUES " +
+                "('" + name + "', '" + username + "', '" + password + "')");
+        super.write();
         super.disconnect();
-        return true;
     }
 
-    public boolean updateUni(String newUsername) throws SQLException {
-        if (!checkUniWithUsername()) {
-            return false;
-        } else {
-            super.setQuery("UPDATE Universities SET Name = '" + name + "', Username = '" + newUsername + "', Password = '" +
-                    password + "' WHERE Username = '" + username + "'");
-            super.write();
-        }
-
+    @Override // This function update information when university edit his information.
+    public void updateDatabase(String oldUsername) throws SQLException {
+        super.setQuery("UPDATE Universities SET Name = '" + name + "', Username = '" + username + "', Password = '" +
+                password + "' WHERE Username = '" + oldUsername + "'");
+        super.write();
         super.disconnect();
-        return true;
     }
 
-    public boolean removeUni() throws SQLException {
-        if (!checkUniWithName() || !checkUniWithUsername()) {
-            return false;
-        } else {
-            super.setQuery("DELETE FROM Universities WHERE Name = '" + name + "' OR Username = '" + username + "'");
-            super.write();
-        }
-
-        super.disconnect();
-        return true;
-    }
-
+    // This function check that university with this name exists or not.
     public boolean checkUniWithName() throws SQLException {
         super.setQuery("SELECT * FROM Universities WHERE Name = '" + name + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -78,9 +42,10 @@ public class UniversityDB extends Database{
         return false;
     }
 
-    public boolean checkUniWithUsername() throws SQLException {
+    @Override // This function check that username exists or not.
+    public boolean checkExistUsername(String username) throws SQLException {
         super.setQuery("SELECT * FROM Universities WHERE Username = '" + username + "'");
-        if (super.isExist()) {
+        if (super.read().isBeforeFirst()) {
             super.disconnect();
             return true;
         }
@@ -89,11 +54,23 @@ public class UniversityDB extends Database{
         return false;
     }
 
-    public ResultSet findUni() throws SQLException {
+    @Override
+    public ResultSet findWithUsername() throws SQLException {
         super.setQuery("SELECT * FROM `Universities` WHERE Username = '" + username + "'");
         return super.read();
     }
 
+    @Override
+    public String findName() throws SQLException {
+        ResultSet resultSet = findWithUsername();
+        String name = "";
+        while (resultSet.next()) {
+            name = resultSet.getString("Name");
+        }
+        return name;
+    }
+
+    // This function return number of universities.
     public int numberOfUni () throws SQLException {
         super.setQuery("SELECT * FROM Universities");
         ResultSet resultSet = super.read();

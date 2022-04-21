@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -13,7 +13,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.Login">
    <left>
-      <AnchorPane prefHeight="600.0" prefWidth="389.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="600.0" prefWidth="389.0" style="-fx-background-color: #0c31a1;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="120.0" layoutY="123.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -31,30 +31,35 @@
    <center>
       <AnchorPane prefHeight="600.0" prefWidth="476.0" style="-fx-background-color: #ffffff;" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="usernameInput" layoutX="130.0" layoutY="211.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #0c31a1#0c31a1; -fx-border-width: 0px 0px 2px 0px;" />
-            <PasswordField fx:id="passwordInput" layoutX="130.0" layoutY="272.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #0c31a1#0c31a1; -fx-border-width: 0px 0px 2px 0px;" />
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
+            <TextField fx:id="usernameInput" layoutX="115.0" layoutY="211.0" prefHeight="35.0" prefWidth="210.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #0c31a1; -fx-border-width: 0px 0px 2px 0px;">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <PasswordField fx:id="passwordInput" layoutX="115.0" layoutY="272.0" prefHeight="35.0" prefWidth="210.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #0c31a1; -fx-border-width: 0px 0px 2px 0px;">
+               <font>
+                  <Font size="17.0" />
+               </font></PasswordField>
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="75.0" layoutY="275.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../img/password.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="90.0" layoutY="209.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="75.0" layoutY="214.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../img/user.png" />
                </image>
             </ImageView>
-            <Button fx:id="loginButton" layoutX="130.0" layoutY="396.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="28.0" prefWidth="159.5" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Login" textFill="WHITE">
+            <Button layoutX="115.0" layoutY="398.0" mnemonicParsing="false" onAction="#loginClicked" prefHeight="35.0" prefWidth="210.0" style="-fx-background-color: #0c31a1; -fx-background-radius: 25;" text="Login" textFill="WHITE">
                <font>
-                  <Font size="20.0" />
+                  <Font size="25.0" />
                </font>
             </Button>
-            <ChoiceBox fx:id="jobInput" layoutX="130.0" layoutY="329.0" prefHeight="28.0" prefWidth="159.5" style="-fx-background-color: transparent; -fx-border-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-border-width: 0px 0px 2px 0px;" />
-            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="91.0" layoutY="330.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="27.0" fitWidth="27.0" layoutX="76.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../img/job.png" />
                </image>
             </ImageView>
-            <Button fx:id="signupButton" layoutX="171.0" layoutY="482.0" mnemonicParsing="false" onAction="#signupClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Sign Up" textFill="WHITE">
+            <Button layoutX="180.0" layoutY="488.0" mnemonicParsing="false" onAction="#signupClicked" style="-fx-background-color: #0c31a1; -fx-background-radius: 25;" text="Sign Up" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
@@ -69,11 +74,12 @@
                   <Font size="27.0" />
                </font>
             </Label>
-            <Button fx:id="quitButton" layoutX="357.0" layoutY="570.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
+            <Button layoutX="357.0" layoutY="570.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
+            <ComboBox fx:id="jobInput" layoutX="115.0" layoutY="333.0" prefHeight="35.0" prefWidth="210.0" promptText="Job" style="-fx-background-color: transparent; -fx-border-color: #0c31a1; -fx-border-width: 0px 0px 2px 0px 0px 0px 2px 0px;" />
          </children>
       </AnchorPane>
    </center>
