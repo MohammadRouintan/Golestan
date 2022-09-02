@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.golestan.Controller.SignupUni">
+   <top>
+      <AnchorPane prefHeight="118.0" prefWidth="800.0" style="-fx-background-color: #0c31a1#0c31a1;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="264.0" layoutY="38.0" text="University Sign UP" textFill="WHITE">
+               <font>
+                  <Font size="35.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="87.0" fitWidth="90.0" layoutX="86.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/signup.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="490.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="746.0" layoutY="452.0" mnemonicParsing="false" onAction="#quitClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Quit" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <Button layoutX="687.0" layoutY="452.0" mnemonicParsing="false" onAction="#backClicked" style="-fx-background-color: #0c31a1#0c31a1 #0c31a1#0c31a1; -fx-background-radius: 25;" text="Back" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Button>
+            <TextField fx:id="nameInput" layoutX="295.0" layoutY="59.0" prefHeight="40.0" prefWidth="220.0" promptText="Name" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <TextField fx:id="usernameInput" layoutX="295.0" layoutY="123.0" prefHeight="40.0" prefWidth="220.0" promptText="Username" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+               <font>
+                  <Font size="17.0" />
+               </font></TextField>
+            <PasswordField fx:id="passwordInput" layoutX="295.0" layoutY="187.0" prefHeight="40.0" prefWidth="220.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-color: #1e90ff#1e90ff; -fx-border-width: 2px 2px 2px 2px; -fx-border-radius: 25; -fx-background-radius: 25;">
+               <font>
+                  <Font size="17.0" />
+               </font></PasswordField>
+            <Label layoutX="210.0" layoutY="62.0" text="Name :" textFill="#0c31a1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="168.0" layoutY="126.0" text="Username :" textFill="#0c31a1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label layoutX="173.0" layoutY="190.0" text="Password :" textFill="#0c31a1">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Button layoutX="295.0" layoutY="254.0" mnemonicParsing="false" onAction="#signupClicked" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: #0c31a1#0c31a1; -fx-background-radius: 25;" text="Sign Up" textFill="WHITE">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
